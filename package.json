@@ -5,7 +5,9 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "nodemon server/app.js",
+        "client": "cd client && npm start",
+        "build": "npm install && cd client && npm install && npm run build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "hung",
