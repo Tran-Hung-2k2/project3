@@ -1,12 +1,20 @@
-const express = require('express');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import route from './src/routes/index.js';
 
 const app = express();
 
-require('dotenv').config();
+dotenv.config();
 const PORT = process.env.PORT || 8080;
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
+app.use(cors());
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(PORT, () => console.log(`server is running at http://localhost:${PORT}`));
+route(app);
+
+app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`));
