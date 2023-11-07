@@ -1,20 +1,10 @@
 import express from 'express';
-import authController from '../controllers/auth_controller.js';
-import authMiddleware from '../middlewares/auth_middlewares.js';
-const authRouter = express.Router();
+import auth_controller from '../controllers/auth_controller.js';
+const auth_route = express.Router();
 
-authRouter.post('/register', authController.register);
-authRouter.post('/login', authController.login);
-authRouter.post('/logout', authController.logout);
-authRouter.post('/refreshToken', authController.refreshToken);
+auth_route.post('/register', auth_controller.register);
+auth_route.post('/login', auth_controller.login);
+auth_route.post('/logout', auth_controller.logout);
+auth_route.post('/refreshToken', auth_controller.refreshToken);
 
-// Example: How to use authMiddleware
-
-// authRouter.get('/test_middleware_user', authMiddleware.verifyAdmin, (req, res) => {
-//     return res.status(200).json(req.user.id);
-// })
-
-// If you want to get current logged in user id, take in req.user.id
-// If you want to check logged in as admin, use authMiddleware.verifyAdmin instead of authMiddleware.verifyUser
-
-export default authRouter;
+export default auth_route;

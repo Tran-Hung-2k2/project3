@@ -1,5 +1,5 @@
 {
-    "type": "module",
+    "type": "commonjs",
     "name": "project3",
     "version": "1.0.0",
     "description": "",
@@ -8,6 +8,8 @@
         "start": "nodemon --exec babel-node server/server.js",
         "client": "cd client && npm start",
         "build": "npm install && cd client && npm install && npm run build",
+        "migrate": "cd server/src && npx sequelize-cli db:migrate",
+        "migrate:undo": "cd server/src && npx sequelize-cli db:migrate:undo:all",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "hung",
@@ -18,7 +20,6 @@
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
-        "express": "^4.18.2",
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.6.2",
         "sequelize": "^6.33.0"
@@ -27,7 +28,11 @@
         "@babel/core": "^7.23.2",
         "@babel/node": "^7.22.19",
         "@babel/preset-env": "^7.23.2",
+        "express": "^4.18.2",
         "nodemon": "^3.0.1",
-        "sequelize-cli": "^6.6.1"
+        "sequelize-auto-migrations-v2": "^1.2.1",
+        "sequelize-cli": "^6.6.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.0"
     }
 }

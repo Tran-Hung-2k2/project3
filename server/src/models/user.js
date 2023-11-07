@@ -1,50 +1,49 @@
 'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
+         * Phương thức hỗ trợ để định nghĩa các mối quan hệ.
+         * Phương thức này không thuộc về vòng đời Sequelize.
+         * Tệp `models/index` sẽ tự động gọi phương thức này.
          */
         static associate(models) {
-            // define association here
-            User.belongsTo(models.Role, { foreignKey: 'ID_Role' });
-            User.hasMany(models.Order, { foreignKey: 'ID_User' });
-            User.belongsToMany(models.Product, {
-                through: 'carts',
-                foreignKey: 'ID_User',
+            User.hasMany(models.Parking_Card, {
+                foreignKey: 'User_ID',
             });
-            User.belongsToMany(models.Voucher, {
-                through: 'voucher_users',
-                foreignKey: 'ID_User',
-            });
-            User.hasMany(models.Post, { foreignKey: 'ID_User' });
-            User.hasMany(models.Comment, { foreignKey: 'ID_User' });
         }
     }
+
     User.init(
         {
             User_ID: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                unique: true,
-                allowNull: false,
-                autoIncrement: true,
             },
             User_Name: {
-                type: DataTypes.STRING(45),
-                unique: true,
+                type: DataTypes.STRING,
                 allowNull: false,
             },
-            User_Password: DataTypes.STRING(45),
-            Gender: DataTypes.STRING(45),
-            Birthday: DataTypes.Date,
-            Email: DataTypes.STRING(45),
-            Phone_Number: DataTypes.STRING(45),
-            Address: DataTypes.STRING(45),
-            Avatar: DataTypes.STRING(45),
-            Balance: DataTypes.STRING(45),
+            Email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
+            },
+            User_Password: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            Gender: DataTypes.STRING,
+            Birthday: DataTypes.DATEONLY,
+            Phone_Number: DataTypes.STRING,
+            Address: DataTypes.STRING,
+            Avatar: DataTypes.STRING,
+            Balance: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                defaultValue: 0,
+            },
         },
         {
             sequelize,
