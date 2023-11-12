@@ -1,13 +1,13 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Parking_Manager', {
+        await queryInterface.createTable('Parking_Managers', {
             Manager_ID: {
                 type: Sequelize.UUID,
                 primaryKey: true,
                 defaultValue: Sequelize.UUIDV4,
                 references: {
-                    model: 'Manager',
+                    model: 'Managers',
                     key: 'Manager_ID',
                 },
                 onUpdate: 'CASCADE',
@@ -18,7 +18,7 @@ module.exports = {
                 primaryKey: true,
                 defaultValue: Sequelize.UUIDV4,
                 references: {
-                    model: 'Parking',
+                    model: 'Parkings',
                     key: 'Parking_ID',
                 },
                 onUpdate: 'CASCADE',
@@ -31,16 +31,16 @@ module.exports = {
             },
             createdAt: {
                 type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: Sequelize.literal('Now()'),
             },
             updatedAt: {
                 type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+                defaultValue: Sequelize.literal('Now()'),
             },
         });
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Parking_Manager');
+        await queryInterface.dropTable('Parking_Managers');
     },
 };

@@ -2,7 +2,7 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Parking_Card', {
+        await queryInterface.createTable('Parking_Cards', {
             Card_ID: {
                 type: Sequelize.UUID,
                 primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
                 type: Sequelize.UUID,
                 allowNull: false,
                 references: {
-                    model: 'User',
+                    model: 'Users',
                     key: 'User_ID',
                 },
                 onUpdate: 'CASCADE',
@@ -25,16 +25,16 @@ module.exports = {
             },
             createdAt: {
                 type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: Sequelize.literal('Now()'),
             },
             updatedAt: {
                 type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+                defaultValue: Sequelize.literal('Now()'),
             },
         });
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Parking_Card');
+        await queryInterface.dropTable('Parking_Cards');
     },
 };

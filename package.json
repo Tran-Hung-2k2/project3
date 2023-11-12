@@ -10,6 +10,8 @@
         "build": "npm install && cd client && npm install && npm run build",
         "migrate": "cd server/src && npx sequelize-cli db:migrate",
         "migrate:undo": "cd server/src && npx sequelize-cli db:migrate:undo:all",
+        "seed": "cd server/src && npx sequelize-cli db:seed:all",
+        "seed:undo": "cd server/src && npx sequelize-cli db:seed:undo:all",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "hung",
@@ -20,6 +22,7 @@
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
+        "email-validator": "^2.0.4",
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.6.2",
         "sequelize": "^6.33.0"

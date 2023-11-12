@@ -1,179 +1,136 @@
 import bcrypt from 'bcrypt';
-import emailValidator from 'email-validator';
-import jwt from 'jsonwebtoken';
+import email_validator from 'email-validator';
 import db from '../models/index.js';
+import http_response from '../utils/http_response.js';
+import token from '../utils/token.js';
+import hash_password from '../utils/hash_password.js';
 
-const authController = {
-    generateAccessToken(user) {
-        return jwt.sign(
-            {
-                id: user.ID_User,
-                role: user.ID_Role,
-            },
-            process.env.JWT_ACCESS_KEY,
-            {
-                expiresIn: '3d',
-            },
-        );
-    },
-
-    generateRefreshToken(user) {
-        return jwt.sign(
-            {
-                id: user.ID_User,
-                role: user.ID_Role,
-            },
-            process.env.JWT_REFRESH_KEY,
-            {
-                expiresIn: '365d',
-            },
-        );
-    },
-
-    // [POST] /auth/register
-    async register(req, res) {
+const auth_controller = {
+    // [POST] /api/auth/user/register/
+    async user_register(req, res) {
         try {
-            // Destructure fields from request body
-            const { fullname, email, password, phone_number, address } = req.body;
+            const { User_Name, Email, User_Password, Gender, Birthday, Phone_Number, Address, Avatar } = req.body;
 
-            // Check if required fields are present
-            if (!fullname || !email || !password || !phone_number) {
-                return res.status(400).json({
-                    isError: true,
-                    message: 'Missing required field',
-                });
+            if (!User_Name || !Email || !User_Password) {
+                return res.status(400).json(http_response(true, 'Thiếu các trường bắt buộc'));
             }
 
-            // Validate email using email-validator library
-            if (!emailValidator.validate(email)) {
-                return res.status(400).json({
-                    isError: true,
-                    message: 'Email is invalid',
-                });
+            if (!email_validator.validate(Email)) {
+                return res.status(400).json(http_response(true, 'Email không hợp lệ'));
             }
 
-            // Check if email already exists in database
-            const dbUser = await db.User.findOne({ where: { email } });
-            if (dbUser) {
-                return res.status(400).json({
-                    isError: true,
-                    message: 'Email is already existed',
-                });
+            const isUser = await db.User.findOne({ where: { Email } });
+            if (isUser) {
+                return res.status(400).json(http_response(true, 'Email đã được đăng ký trước đó'));
             }
 
-            // Generate salt and hash password using bcrypt library
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-
-            // Create new user in database
             const user = await db.User.create({
-                ID_Role: 2,
-                fullname,
-                email,
-                phone_number,
-                address,
-                password: hashedPassword,
+                User_Name,
+                Email,
+                User_Password: await hash_password(User_Password),
+                Gender,
+                Birthday,
+                Phone_Number,
+                Address,
+                Avatar,
             });
 
-            // Return success response with newly created user object
-            return res.status(201).json({
-                isError: false,
-                user,
-                message: 'Register Successfully',
-            });
+            return res.status(201).json(http_response(false, 'Đăng ký thành công', user));
         } catch (error) {
-            // Log error and return error response
-            console.error(error);
-            return res.status(500).json({ isError: true });
+            return res.status(500).json(http_response(true, 'Đăng ký thất bại'));
         }
     },
 
-    // [POST] /auth/login
-    async login(req, res) {
+    // [POST] /api/auth/user/login/
+    async user_login(req, res) {
         try {
-            const { email, password } = req.body;
-            if (!email || !password) {
+            const { Email, User_Password } = req.body;
+            if (!Email || !User_Password) {
                 return res.status(400).json({
-                    isError: true,
-                    message: 'Missing required field',
+                    is_error: true,
+                    message: 'Thiếu các trường bắt buộc',
                 });
             }
 
             const user = await db.User.findOne({
-                where: { email },
+                where: { Email },
             });
 
-            if (!user || !(await bcrypt.compare(password, user.password))) {
-                return res.status(401).json({
-                    isError: true,
-                    message: 'Wrong username or password',
-                });
+            if (!user || !(await bcrypt.compare(User_Password, user.User_Password))) {
+                return res.status(401).json(http_response(true, 'Email hoặc mật khẩu không chính xác'));
             }
 
-            const accessToken = authController.generateAccessToken(user);
-            const refreshToken = authController.generateRefreshToken(user);
-            res.cookie('accessToken', accessToken, {
+            const access_token = token.generate_access_token(user.User_ID);
+            res.cookie('access_token', access_token, {
                 httpOnly: true,
             });
-            res.cookie('refreshToken', refreshToken, {
+
+            const refresh_token = token.generate_refresh_token(user.User_ID);
+            res.cookie('refresh_token', refresh_token, {
                 httpOnly: true,
             });
-            return res.status(200).json({
-                isError: false,
-                message: 'Login Successfully',
-                user: user,
-                accessToken,
-            });
+
+            return res.status(200).json(http_response(false, 'Đăng nhập thành công', user));
         } catch (error) {
-            return res.status(500).json({ isError: true });
+            return res.status(500).json(http_response(true, 'Đăng nhập thất bại'));
         }
     },
 
-    // [POST] /auth/refreshToken
-    async refreshToken(req, res) {
-        const refreshToken = req.cookies.refreshToken;
-        if (!refreshToken)
-            return res.status(401).json({
-                isError: true,
-                message: 'Please login to continue',
-            });
-        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
-            if (err) {
-                return res.status(403).json({
-                    isError: true,
-                    message: 'Token is invalid',
-                });
+    // [POST] /api/auth/manager/login/
+    async manager_login(req, res) {
+        try {
+            const { Email, Manager_Password } = req.body;
+            if (!Email || !Manager_Password) {
+                return res.status(400).json(http_response(true, 'Thiếu các trường bắt buộc'));
             }
-            const newAccessToken = authController.generateAccessToken({
-                ID_User: user.id,
-                ID_Role: user.role,
+
+            const manager = await db.Manager.findOne({
+                where: { Email },
             });
-            const newRefreshToken = authController.generateAccessToken({
-                ID_User: user.id,
-                ID_Role: user.role,
-            });
-            res.cookie('accessToken', newAccessToken, {
+
+            if (!manager || !(await bcrypt.compare(Manager_Password, manager.Manager_Password))) {
+                return res.status(401).json(http_response(true, 'Email hoặc mật khẩu không chính xác'));
+            }
+
+            const access_token = token.generate_access_token(manager.Manager_Password);
+            res.cookie('access_token', access_token, {
                 httpOnly: true,
             });
-            res.cookie('refreshToken', newRefreshToken, {
+
+            const refresh_token = token.generate_refresh_token(manager.Manager_Password);
+            res.cookie('refresh_token', refresh_token, {
                 httpOnly: true,
             });
-            return res.status(200).json({
-                isError: false,
-                message: 'Refresh token successfully',
+
+            return res.status(200).json(http_response(false, 'Đăng nhập thành công', manager));
+        } catch (error) {
+            return res.status(500).json(http_response(true, 'Đăng nhập thất bại'));
+        }
+    },
+
+    // [POST] /api/auth/refresh_token/
+    async refresh_token(req, res) {
+        const refresh_token = req.cookies.refresh_token;
+        if (!refresh_token) return res.status(401).json(http_response(true, 'Vui lòng đăng nhập để tiếp tục'));
+
+        jwt.verify(refresh_token, process.env.JWT_REFRESH_KEY, (err, token) => {
+            if (err) {
+                return res.status(403).json(http_response(true, 'Token đã hết hạn hoặc không chính xác'));
+            }
+            const access_token = token.generate_access_token(token.id);
+            res.cookie('access_token', access_token, {
+                httpOnly: true,
             });
+            return res.status(200).json(http_response(false, 'Làm mới access token thành công'));
         });
     },
 
-    // [POST] /auth/logout
+    // [POST] /api/auth/logout/
     async logout(req, res) {
-        res.clearCookie('accessToken');
-        res.clearCookie('refreshToken');
-        return res.status(200).json({
-            isError: false,
-            message: 'Logout Successfully',
-        });
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
+        return res.status(200).json(http_response(false, 'Đăng xuất thành công'));
     },
 };
 
-export default authController;
+export default auth_controller;

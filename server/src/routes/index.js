@@ -5,9 +5,9 @@ import parking_manager_route from '.parking_manager_route.js';
 import parking_record_route from '.parking_record_route.js';
 
 export default (app) => {
-    app.use('/auth', auth_route);
-    app.use('/parking', parking_route);
-    app.use('/parking_card', parking_card_route);
-    app.use('/parking_manager', parking_manager_route);
-    app.use('/parking_record', parking_record_route);
+    app.use('/api/auth', auth_route);
+    app.use('/api/parking', parking_route);
+    app.use('/api/parking_card', parking_card_route);
+    app.use('/api/parking_manager', parking_manager_route);
+    app.use('/api/parking_record', parking_record_route);
 };
