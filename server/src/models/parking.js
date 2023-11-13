@@ -9,9 +9,10 @@ module.exports = (sequelize, DataTypes) => {
          * Tệp `models/index` sẽ tự động gọi phương thức này.
          */
         static associate(models) {
-            Parking.belongsToMany(models.Manager, {
+            Parking.belongsToMany(models.User, {
                 through: 'Parking_Manager',
                 foreignKey: 'Parking_ID',
+                otherKey: 'User_ID',
             });
 
             Parking.hasMany(models.Parking_Record, {

@@ -6,4 +6,4 @@ const hash_password = async (password) => {
     return hashed_password;
 };
 
-module.exports = hash_password;
+export default hash_password;

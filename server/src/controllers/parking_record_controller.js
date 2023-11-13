@@ -1,5 +1,5 @@
 import db from '../models/index.js';
-import http_response from '../utils/http_response.js';
+import make_obj_data from '../utils/make_obj_data.js';
 
 const parking_record_controller = {
     // [GET] api/parking_record/
@@ -8,9 +8,9 @@ const parking_record_controller = {
             const parking_records = await db.Parking_Record.findAll();
             return res
                 .status(200)
-                .json(http_response(false, 'Lấy danh sách thông tin gửi xe thành công', parking_records));
+                .json(make_obj_data(false, 'Lấy danh sách thông tin gửi xe thành công', parking_records));
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Lấy danh sách thông tin gửi xe thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Lấy danh sách thông tin gửi xe thất bại'));
         }
     },
 
@@ -19,7 +19,7 @@ const parking_record_controller = {
         try {
             const { Parking_ID, Card_ID, Record_Image, Action } = req.body;
             if ((Parking_ID, Card_ID, Record_Image, Action))
-                return res.status(400).json(http_response(true, 'Thiếu các trường bắt buộc'));
+                return res.status(400).json(make_obj_data(true, 'Thiếu các trường bắt buộc'));
 
             const parking_record = await db.Parking_Record.create({
                 Parking_ID,
@@ -28,9 +28,9 @@ const parking_record_controller = {
                 Action,
             });
 
-            return res.status(201).json(http_response(false, 'Thêm thông tin gửi xe mới thành công', parking_record));
+            return res.status(201).json(make_obj_data(false, 'Thêm thông tin gửi xe mới thành công', parking_record));
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Thêm thông tin gửi xe mới thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Thêm thông tin gửi xe mới thất bại'));
         }
     },
 };

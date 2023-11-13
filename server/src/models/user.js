@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
             User.hasMany(models.Parking_Card, {
                 foreignKey: 'User_ID',
             });
+
+            User.belongsToMany(models.Parking, {
+                through: 'Parking_Manager',
+                foreignKey: 'User_ID',
+                otherKey: 'Parking_ID',
+            });
         }
     }
 
@@ -43,6 +49,11 @@ module.exports = (sequelize, DataTypes) => {
             Balance: {
                 type: DataTypes.INTEGER.UNSIGNED,
                 defaultValue: 0,
+            },
+            Role: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: 'user',
             },
         },
         {

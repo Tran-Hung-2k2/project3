@@ -9,8 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          * Tệp `models/index` sẽ tự động gọi phương thức này.
          */
         static associate(models) {
-            Parking_Record.belongsTo(models.Parking_Card);
-            Parking_Record.belongsTo(models.Parking);
+            Parking_Record.belongsTo(models.Parking_Card, {
+                foreignKey: 'Card_ID',
+            });
+            Parking_Record.belongsTo(models.Parking,  {
+                foreignKey: 'Parking_ID',
+            });
         }
     }
 

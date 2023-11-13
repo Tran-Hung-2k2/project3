@@ -1,4 +1,4 @@
-const http_response = (is_error = false, message = 'Thành công', ...data) => {
+const make_obj_data = (is_error = false, message = 'Thành công', ...data) => {
     if (typeof is_error !== 'boolean') {
         throw new Error('Tham số is_error phải là kiểu boolean');
     }
@@ -10,8 +10,11 @@ const http_response = (is_error = false, message = 'Thành công', ...data) => {
     return {
         is_error,
         message,
+        details: {
+            body: [{ message }],
+        },
         ...data,
     };
 };
 
-export default http_response;
+export default make_obj_data;

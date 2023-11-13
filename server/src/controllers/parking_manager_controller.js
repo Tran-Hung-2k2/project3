@@ -1,5 +1,5 @@
 import db from '../models/index.js';
-import http_response from '../utils/http_response.js';
+import make_obj_data from '../utils/make_obj_data.js';
 
 const parking_manager_controller = {
     // [GET] api/parking_manager/
@@ -8,9 +8,9 @@ const parking_manager_controller = {
             const parking_managers = await db.Parking_Manager.findAll();
             return res
                 .status(200)
-                .json(http_response(false, 'Lấy danh sách quản lý bãi đỗ xe thành công', parking_managers));
+                .json(make_obj_data(false, 'Lấy danh sách quản lý bãi đỗ xe thành công', parking_managers));
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Lấy danh sách quản lý bãi đỗ xe thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Lấy danh sách quản lý bãi đỗ xe thất bại'));
         }
     },
 
@@ -18,16 +18,16 @@ const parking_manager_controller = {
     async add_parking_manager(req, res) {
         try {
             const { Manager_ID, Parking_ID } = req.body;
-            if ((Manager_ID, Parking_ID)) return res.status(400).json(http_response(true, 'Thiếu các trường bắt buộc'));
+            if ((Manager_ID, Parking_ID)) return res.status(400).json(make_obj_data(true, 'Thiếu các trường bắt buộc'));
 
             const parking_manager = await db.Parking_Manager.create({
                 Manager_ID,
                 Parking_ID,
             });
 
-            return res.status(201).json(http_response(false, 'Thêm quản lý bãi đỗ xe mới thành công', parking_manager));
+            return res.status(201).json(make_obj_data(false, 'Thêm quản lý bãi đỗ xe mới thành công', parking_manager));
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Thêm quản lý bãi đỗ xe mới thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Thêm quản lý bãi đỗ xe mới thất bại'));
         }
     },
 
@@ -49,12 +49,12 @@ const parking_manager_controller = {
             });
 
             if (result[0] === 1) {
-                return res.status(200).json(http_response(false, 'Cập nhật thông tin quản lý bãi đỗ xe thành công'));
+                return res.status(200).json(make_obj_data(false, 'Cập nhật thông tin quản lý bãi đỗ xe thành công'));
             } else {
-                return res.status(404).json(http_response(true, 'Không tìm thấy quản lý bãi đỗ xe'));
+                return res.status(404).json(make_obj_data(true, 'Không tìm thấy quản lý bãi đỗ xe'));
             }
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Cập nhật thông tin quản lý bãi đỗ xe thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Cập nhật thông tin quản lý bãi đỗ xe thất bại'));
         }
     },
 
@@ -69,12 +69,12 @@ const parking_manager_controller = {
             });
 
             if (result === 1) {
-                return res.status(200).json(http_response(false, 'Xóa quản lý bãi đỗ xe thành công'));
+                return res.status(200).json(make_obj_data(false, 'Xóa quản lý bãi đỗ xe thành công'));
             } else {
-                return res.status(404).json(http_response(true, 'Không tìm thấy quản lý bãi đỗ xe'));
+                return res.status(404).json(make_obj_data(true, 'Không tìm thấy quản lý bãi đỗ xe'));
             }
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Xóa quản lý bãi đỗ xe thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Xóa quản lý bãi đỗ xe thất bại'));
         }
     },
 };

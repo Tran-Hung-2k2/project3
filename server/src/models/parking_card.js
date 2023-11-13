@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
          * Tệp `models/index` sẽ tự động gọi phương thức này.
          */
         static associate(models) {
-            Parking_Card.belongsTo(models.User);
+            Parking_Card.belongsTo(models.User, {
+                foreignKey: 'User_ID',
+            });
 
             Parking_Card.hasMany(models.Parking_Record, {
                 foreignKey: 'Card_ID',
@@ -39,5 +41,6 @@ module.exports = (sequelize, DataTypes) => {
             modelName: 'Parking_Card',
         },
     );
+
     return Parking_Card;
 };

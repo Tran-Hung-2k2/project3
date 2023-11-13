@@ -1,14 +1,15 @@
 import db from '../models/index.js';
-import http_response from '../utils/http_response.js';
+import make_obj_data from '../utils/make_obj_data.js';
 
 const parking_controller = {
     // [GET] api/parking_card/
     async get_all_parking_card(req, res) {
         try {
             const parking_cards = await db.Parking_Card.findAll();
-            return res.status(200).json(http_response(false, 'Lấy danh sách thẻ gửi xe thành công', parking_cards));
+            return res.status(200).json(make_obj_data(false, 'Lấy danh sách thẻ gửi xe thành công', parking_cards));
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Lấy danh sách thẻ gửi xe thất bại'));
+            console.log(error);
+            return res.status(500).json(make_obj_data(true, 'Lấy danh sách thẻ gửi xe thất bại'));
         }
     },
 
@@ -16,15 +17,15 @@ const parking_controller = {
     async add_parking_card(req, res) {
         try {
             const { User_ID } = req.body;
-            if (User_ID) return res.status(400).json(http_response(true, 'Thiếu các trường bắt buộc'));
+            if (User_ID) return res.status(400).json(make_obj_data(true, 'Thiếu các trường bắt buộc'));
 
             const parking_card = await db.Parking_Card.create({
                 User_ID,
             });
 
-            return res.status(201).json(http_response(false, 'Thêm thẻ gửi xe mới thành công', parking_card));
+            return res.status(201).json(make_obj_data(false, 'Thêm thẻ gửi xe mới thành công', parking_card));
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Thêm thẻ gửi xe mới thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Thêm thẻ gửi xe mới thất bại'));
         }
     },
 
@@ -45,12 +46,12 @@ const parking_controller = {
             });
 
             if (result[0] === 1) {
-                return res.status(200).json(http_response(false, 'Cập nhật thông tin thẻ gửi xe thành công'));
+                return res.status(200).json(make_obj_data(false, 'Cập nhật thông tin thẻ gửi xe thành công'));
             } else {
-                return res.status(404).json(http_response(true, 'Không tìm thấy thẻ gửi xe'));
+                return res.status(404).json(make_obj_data(true, 'Không tìm thấy thẻ gửi xe'));
             }
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Cập nhật thông tin thẻ gửi xe thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Cập nhật thông tin thẻ gửi xe thất bại'));
         }
     },
 
@@ -64,12 +65,12 @@ const parking_controller = {
             });
 
             if (result === 1) {
-                return res.status(200).json(http_response(false, 'Xóa thẻ gửi xe thành công'));
+                return res.status(200).json(make_obj_data(false, 'Xóa thẻ gửi xe thành công'));
             } else {
-                return res.status(404).json(http_response(true, 'Không tìm thấy thẻ gửi xe'));
+                return res.status(404).json(make_obj_data(true, 'Không tìm thấy thẻ gửi xe'));
             }
         } catch (error) {
-            return res.status(500).json(http_response(true, 'Xóa thẻ gửi xe thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Xóa thẻ gửi xe thất bại'));
         }
     },
 };

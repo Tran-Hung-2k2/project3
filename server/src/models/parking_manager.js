@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Parking_Manager.init(
         {
-            Manager_ID: {
+            User_ID: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
