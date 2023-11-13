@@ -5,11 +5,10 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * createTable "Managers", deps: []
  * createTable "Parkings", deps: []
  * createTable "Users", deps: []
  * createTable "Parking_Cards", deps: [Users]
- * createTable "Parking_Managers", deps: [Users, Parkings, Managers, Parkings]
+ * createTable "Parking_Managers", deps: [Users, Parkings]
  * createTable "Parking_Records", deps: [Parkings, Parking_Cards]
  *
  **/
@@ -17,78 +16,11 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2023-11-13T17:28:37.801Z",
+    "created": "2023-11-13T20:34:00.102Z",
     "comment": ""
 };
 
 var migrationCommands = [{
-        fn: "createTable",
-        params: [
-            "Managers",
-            {
-                "Manager_ID": {
-                    "type": Sequelize.UUID,
-                    "field": "Manager_ID",
-                    "primaryKey": true,
-                    "defaultValue": Sequelize.UUIDV4
-                },
-                "Manager_Name": {
-                    "type": Sequelize.STRING,
-                    "field": "Manager_Name",
-                    "allowNull": false
-                },
-                "Email": {
-                    "type": Sequelize.STRING,
-                    "field": "Email",
-                    "unique": true,
-                    "allowNull": false
-                },
-                "Manager_Password": {
-                    "type": Sequelize.STRING,
-                    "field": "Manager_Password",
-                    "allowNull": false
-                },
-                "Gender": {
-                    "type": Sequelize.STRING,
-                    "field": "Gender"
-                },
-                "Birthday": {
-                    "type": Sequelize.DATEONLY,
-                    "field": "Birthday"
-                },
-                "Phone_Number": {
-                    "type": Sequelize.STRING,
-                    "field": "Phone_Number"
-                },
-                "Address": {
-                    "type": Sequelize.STRING,
-                    "field": "Address"
-                },
-                "Avatar": {
-                    "type": Sequelize.STRING,
-                    "field": "Avatar"
-                },
-                "Is_Admin": {
-                    "type": Sequelize.BOOLEAN,
-                    "field": "Is_Admin",
-                    "defaultValue": false,
-                    "allowNull": false
-                },
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "field": "createdAt",
-                    "allowNull": false
-                },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "field": "updatedAt",
-                    "allowNull": false
-                }
-            },
-            {}
-        ]
-    },
-    {
         fn: "createTable",
         params: [
             "Parkings",
@@ -213,13 +145,13 @@ var migrationCommands = [{
                 "User_ID": {
                     "type": Sequelize.UUID,
                     "onUpdate": "CASCADE",
-                    "onDelete": "NO ACTION",
+                    "onDelete": "SET NULL",
                     "references": {
                         "model": "Users",
                         "key": "User_ID"
                     },
                     "field": "User_ID",
-                    "allowNull": false
+                    "allowNull": true
                 },
                 "Is_Lock": {
                     "type": Sequelize.BOOLEAN,
@@ -248,28 +180,28 @@ var migrationCommands = [{
             {
                 "User_ID": {
                     "type": Sequelize.UUID,
+                    "unique": "Parking_Managers_User_ID_Parking_ID_unique",
                     "onUpdate": "CASCADE",
                     "onDelete": "CASCADE",
                     "references": {
                         "model": "Users",
                         "key": "User_ID"
                     },
-                    "unique": "Parking_Managers_User_ID_Parking_ID_unique",
-                    "field": "User_ID",
                     "primaryKey": true,
+                    "field": "User_ID",
                     "defaultValue": Sequelize.UUIDV4
                 },
                 "Parking_ID": {
                     "type": Sequelize.UUID,
+                    "unique": "Parking_Managers_User_ID_Parking_ID_unique",
                     "onUpdate": "CASCADE",
                     "onDelete": "CASCADE",
                     "references": {
                         "model": "Parkings",
                         "key": "Parking_ID"
                     },
-                    "unique": "Parking_Managers_User_ID_Parking_ID_unique",
-                    "field": "Parking_ID",
                     "primaryKey": true,
+                    "field": "Parking_ID",
                     "defaultValue": Sequelize.UUIDV4
                 },
                 "Is_Managing": {
@@ -287,28 +219,6 @@ var migrationCommands = [{
                     "type": Sequelize.DATE,
                     "field": "updatedAt",
                     "allowNull": false
-                },
-                "Manager_ID": {
-                    "type": Sequelize.UUID,
-                    "field": "Manager_ID",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "references": {
-                        "model": "Managers",
-                        "key": "Manager_ID"
-                    },
-                    "unique": "Parking_Managers_Manager_ID_ParkingParkingID_unique"
-                },
-                "ParkingParkingID": {
-                    "type": Sequelize.UUID,
-                    "field": "ParkingParkingID",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "references": {
-                        "model": "Parkings",
-                        "key": "Parking_ID"
-                    },
-                    "unique": "Parking_Managers_Manager_ID_ParkingParkingID_unique"
                 }
             },
             {}

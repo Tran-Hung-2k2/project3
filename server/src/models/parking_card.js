@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             User_ID: {
                 type: DataTypes.UUID,
-                allowNull: false,
+                allowNull: true,
             },
             Is_Lock: {
                 type: DataTypes.BOOLEAN,

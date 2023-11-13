@@ -9,8 +9,8 @@ import generate_random_password from '../utils/generate_random_password.js';
 const PORT = process.env.PORT || 8080;
 
 const auth_controller = {
-    // [POST] /api/auth/user/register/
-    async user_register(req, res) {
+    // [POST] /api/auth/register/
+    async register(req, res) {
         try {
             const { User_Name, Email, User_Password, Gender, Birthday, Phone_Number, Address } = req.body;
 
@@ -35,8 +35,8 @@ const auth_controller = {
         }
     },
 
-    // [POST] /api/auth/user/login/
-    async user_login(req, res) {
+    // [POST] /api/auth/login/
+    async login(req, res) {
         try {
             const { Email, User_Password } = req.body;
 
@@ -64,37 +64,34 @@ const auth_controller = {
         }
     },
 
-    // [POST] /api/auth/manager/login/
-    async manager_login(req, res) {
+    // [POST] /api/auth/change_password/
+    async change_password(req, res) {
         try {
-            const { Email, Manager_Password } = req.body;
+            const { Email, Old_Password, New_Password, Confirm_Password } = req.body;
 
-            const manager = await db.Manager.findOne({
+            const user = await db.User.findOne({
                 where: { Email },
             });
 
-            if (!manager || !(await bcrypt.compare(Manager_Password, manager.Manager_Password))) {
+            if (!user || !(await bcrypt.compare(Old_Password, user.User_Password))) {
                 return res.status(401).json(make_obj_data(true, 'Email hoặc mật khẩu không chính xác'));
             }
 
-            const access_token = token.generate_access_token(manager.Manager_ID);
-            res.cookie('access_token', access_token, {
-                httpOnly: true,
-            });
+            if (New_Password != Confirm_Password) {
+                return res.status(401).json(make_obj_data(true, 'Mật khẩu xác nhận không chính xác'));
+            }
 
-            const refresh_token = token.generate_refresh_token(manager.Manager_ID);
-            res.cookie('refresh_token', refresh_token, {
-                httpOnly: true,
-            });
-
-            return res.status(200).json(make_obj_data(false, 'Đăng nhập thành công', manager));
+            // Đặt lại mật khẩu cho người dùng
+            user.User_Password = await hash_password(New_Password);
+            await user.save();
+            return res.status(401).json(make_obj_data(true, 'Đổi mật khẩu thành công'));
         } catch (error) {
-            return res.status(500).json(make_obj_data(true, 'Đăng nhập thất bại'));
+            return res.status(500).json(make_obj_data(true, 'Đổi mật khẩu thất bại'));
         }
     },
 
-    // [POST] /api/auth/user/forget_password/
-    async user_forget_password(req, res) {
+    // [POST] /api/auth/forget_password/
+    async forget_password(req, res) {
         try {
             const { Email } = req.body;
             const isUser = await db.User.findOne({ where: { Email } });
@@ -110,7 +107,7 @@ const auth_controller = {
             const is_send = await send_email(
                 Email,
                 'Reset Password',
-                `Click the following link to reset your password: http://127.0.0.1:${PORT}/api/auth/user/verify_forget_password?reset_pass_token=${reset_pass_token}`,
+                `Click the following link to reset your password: http://127.0.0.1:${PORT}/api/auth/verify_forget_password?reset_pass_token=${reset_pass_token}`,
             );
 
             // Phản hồi thành công
@@ -120,21 +117,18 @@ const auth_controller = {
                     .json(make_obj_data(false, 'Email xác nhận đã được gửi. Vui lòng kiểm tra hộp thư đến của bạn.'));
             else return res.status(500).json(make_obj_data(true, 'Gửi email thất bại vui lòng thử lại sau'));
         } catch (error) {
-            console.log(error);
             return res.status(500).json(make_obj_data(true, 'Đặt lại mật khẩu thất bại'));
         }
     },
 
-    // [GET] /api/auth/user/verify_forget_password/
-    async verify_user_forget_password(req, res) {
+    // [GET] /api/auth/verify_forget_password/
+    async verify_forget_password(req, res) {
         try {
             const { reset_pass_token } = req.query;
-            console.log(typeof reset_pass_token);
 
             // Xác minh token
             token.verify_token(reset_pass_token, process.env.JWT_RESET_PASSWORD_KEY, async (err, token_decode) => {
                 if (err) {
-                    console.log(process.env.JWT_RESET_PASSWORD_KEY, err);
                     return res.status(403).json(make_obj_data(true, 'Token đã hết hạn hoặc không chính xác'));
                 }
                 // Lấy thông tin người dùng từ token
@@ -155,8 +149,8 @@ const auth_controller = {
                 // Gửi email xác nhận mật khẩu đã được thay đổi
                 await send_email(
                     Email,
-                    'Password Reset Successful',
-                    `Your password has been successfully reset. If you did not request this change, please contact support. ${new_password}`,
+                    'Đặt lại mật khẩu thành công',
+                    `Mật khẩu của bạn đã được đặt lại thành công. Mật khẩu mới của bạn là ${new_password}, vui lòng không chia sẻ mật khẩu với người khác.`,
                 );
 
                 // Phản hồi thành công
@@ -170,7 +164,6 @@ const auth_controller = {
                     );
             });
         } catch (error) {
-            console.log(error);
             return res.status(500).json(make_obj_data(true, 'Xác nhận mật khẩu thất bại'));
         }
     },

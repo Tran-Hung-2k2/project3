@@ -18,12 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             User_ID: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
-                primaryKey: true,
             },
             Parking_ID: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
-                primaryKey: true,
             },
             Is_Managing: {
                 type: DataTypes.BOOLEAN,

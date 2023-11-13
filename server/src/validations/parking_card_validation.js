@@ -1,12 +1,19 @@
-const { Joi } = require('express-validation');
+import { Joi } from 'express-validation';
 
-const createRoomValidation = {
-    body: Joi.object({
-        _id: Joi.string(),
-        roomName: Joi.string().required(),
-        listDevices: Joi.array(),
-        userId: Joi.string().required(),
-    })
+const parking_card_validation = {
+    // [POST] api/parking_card/
+    add_parking_card: () => ({
+        body: Joi.object({
+            Email: Joi.string().email(),
+        }),
+    }),
+
+    // [PUT] api/parking_card/:id
+    update_parking_card: () => ({
+        body: Joi.object({
+            Is_Lock: Joi.boolean().required(),
+        }),
+    }),
 };
 
-module.exports = createRoomValidation;
+export default parking_card_validation;

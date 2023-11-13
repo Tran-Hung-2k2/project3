@@ -12,7 +12,7 @@
         "migrate:undo": "cd server/src && npx sequelize-cli db:migrate:undo:all",
         "seed": "cd server/src && npx sequelize-cli db:seed:all",
         "seed:undo": "cd server/src && npx sequelize-cli db:seed:undo:all",
-        "db:makemigrations": "cd server/src && node ./../../node_modules/sequelize-auto-migrations-v2/bin/makemigration.js",
+        "makemigrations": "cd server/src && node ./../../node_modules/sequelize-auto-migrations-v2/bin/makemigration.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "hung",

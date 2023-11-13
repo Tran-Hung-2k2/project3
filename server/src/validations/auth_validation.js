@@ -1,8 +1,8 @@
 import { Joi } from 'express-validation';
 
 const auth_validation = {
-    // [POST] /api/auth/user/register/
-    user_register: () => ({
+    // [POST] /api/auth/register/
+    register: () => ({
         body: Joi.object({
             User_Name: Joi.string().required(),
             Email: Joi.string().email().required(),
@@ -11,29 +11,31 @@ const auth_validation = {
             Birthday: Joi.date(),
             Phone_Number: Joi.string(),
             Address: Joi.string(),
-        }),
+        }).unknown(true),
     }),
 
-    // [POST] /api/auth/user/login/
-    user_login: () => ({
+    // [POST] /api/auth/login/
+    login: () => ({
         body: Joi.object({
             Email: Joi.string().email().required(),
             User_Password: Joi.string().required(),
         }),
     }),
 
-    // [POST] /api/auth/user/forget_password/
-    user_forget_password: () => ({
+    // [POST] /api/auth/change_password/
+    change_password: () => ({
         body: Joi.object({
             Email: Joi.string().email().required(),
+            Old_Password: Joi.string().required(),
+            New_Password: Joi.string().required(),
+            Confirm_Password: Joi.string().required(),
         }),
     }),
 
-    // [POST] /api/auth/manager/login/
-    manager_login: () => ({
+    // [POST] /api/auth/forget_password/
+    forget_password: () => ({
         body: Joi.object({
             Email: Joi.string().email().required(),
-            Manager_Password: Joi.string().required(),
         }),
     }),
 

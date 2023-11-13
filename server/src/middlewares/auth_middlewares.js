@@ -23,10 +23,10 @@ const auth_middleware = {
         }
     },
 
-    verify_user(req, res, next) {
+    verify(req, res, next, roles) {
         auth_middleware.verify_token(req, res, async () => {
-            const isUser = await db.User.findByPk(req.token.id);
-            if (isUser) {
+            const is_user = await db.User.findByPk(req.token.id);
+            if (is_user && roles.includes(is_user.Role)) {
                 next();
             } else {
                 return res.status(403).json({
@@ -35,34 +35,30 @@ const auth_middleware = {
                 });
             }
         });
+    },
+
+    verify_user(req, res, next) {
+        auth_middleware.verify(req, res, next, ['user']);
     },
 
     verify_manager(req, res, next) {
-        auth_middleware.verify_token(req, res, async () => {
-            const isManager = await db.Manager.findByPk(req.token.id);
-            if (isManager) {
-                next();
-            } else {
-                return res.status(403).json({
-                    is_error: true,
-                    message: 'Bạn không có quyền truy cập tài nguyên này',
-                });
-            }
-        });
+        auth_middleware.verify(req, res, next, ['manager']);
     },
 
     verify_admin(req, res, next) {
-        auth_middleware.verify_token(req, res, async () => {
-            const isManager = await db.Manager.findByPk(req.token.id);
-            if (isManager && isManager.Is_Admin) {
-                next();
-            } else {
-                return res.status(403).json({
-                    is_error: true,
-                    message: 'Bạn không có quyền truy cập tài nguyên này',
-                });
-            }
-        });
+        auth_middleware.verify(req, res, next, ['admin']);
+    },
+
+    verify_admin_and_user(req, res, next) {
+        auth_middleware.verify(req, res, next, ['admin', 'user']);
+    },
+
+    verify_admin_and_manager(req, res, next) {
+        auth_middleware.verify(req, res, next, ['admin', 'manager']);
+    },
+
+    verify_all_user(req, res, next) {
+        auth_middleware.verify(req, res, next, ['admin', 'manager', 'user']);
     },
 };
 
