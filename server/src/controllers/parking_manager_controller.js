@@ -2,7 +2,7 @@ import db from '../models/index.js';
 import make_obj_data from '../utils/make_obj_data.js';
 
 const parking_manager_controller = {
-    // [GET] api/parking_manager/
+    // [GET] /api/parking_manager/
     async get_all_parking_manager(req, res) {
         try {
             const parking_managers = await db.Parking_Manager.findAll();
@@ -14,15 +14,25 @@ const parking_manager_controller = {
         }
     },
 
-    // [POST] api/parking_manager/
+    // [POST] /api/parking_manager/
     async add_parking_manager(req, res) {
         try {
-            const { Manager_ID, Parking_ID } = req.body;
-            if ((Manager_ID, Parking_ID)) return res.status(400).json(make_obj_data(true, 'Thiếu các trường bắt buộc'));
+            const manager = await db.User.findByPk(req.body.User_ID);
+            const parking = await db.Parking.findByPk(req.body.Parking_ID);
+
+            if (!manager)
+                return res.status(404).json(make_obj_data(true, 'Không tìm thấy tài khoản người quản lý bãi đỗ xe'));
+
+            if (!parking) return res.status(404).json(make_obj_data(true, 'Không tìm thấy bãi đỗ xe'));
+
+            if (manager.Role != 'manager' && manager.Role != 'admin')
+                return res
+                    .status(400)
+                    .json(make_obj_data(true, 'Bạn chỉ có thể cho phép tài khoản người quản lý quản lý bãi đỗ xe'));
 
             const parking_manager = await db.Parking_Manager.create({
-                Manager_ID,
-                Parking_ID,
+                User_ID: manager.User_ID,
+                Parking_ID: parking.Parking_ID,
             });
 
             return res.status(201).json(make_obj_data(false, 'Thêm quản lý bãi đỗ xe mới thành công', parking_manager));
@@ -31,41 +41,62 @@ const parking_manager_controller = {
         }
     },
 
-    // [PUT] api/parking_manager/:manager_id/:parking_id
+    // [PATCH] /api/parking_manager/:user_id/:parking_id
     async update_parking_manager(req, res) {
         try {
-            const Manager_ID = req.params.manager_id;
-            const Parking_ID = req.params.parking_id;
-            const { Is_Managing } = req.body;
-
-            const updated_parking_manager = {
-                Manager_ID,
-                Parking_ID,
-                Is_Managing,
-            };
-
-            const result = await db.Parking_Manager.update(updated_parking_manager, {
-                where: { Manager_ID, Parking_ID },
+            const parking_manager = await db.Parking_Manager.findOne({
+                where: { User_ID: req.params.user_id, Parking_ID: req.params.parking_id },
             });
 
-            if (result[0] === 1) {
-                return res.status(200).json(make_obj_data(false, 'Cập nhật thông tin quản lý bãi đỗ xe thành công'));
-            } else {
-                return res.status(404).json(make_obj_data(true, 'Không tìm thấy quản lý bãi đỗ xe'));
+            const parking_managers = await db.Parking_Manager.findAll({
+                where: {
+                    [db.Sequelize.Op.or]: [{ User_ID: req.params.user_id }, { Parking_ID: req.params.parking_id }],
+                },
+            });
+
+            const has_manager = parking_managers.some((manager) => manager.Is_Managing === true);
+            if (has_manager && req.body.Is_Managing == true) {
+                return res
+                    .status(400)
+                    .json(
+                        make_obj_data(
+                            true,
+                            'Bạn đang quản lý 1 bãi đỗ xe hoặc bãi đỗ xe này đã có người khác đang quản lý. Vui lòng thử lại sau.',
+                        ),
+                    );
             }
+
+            if (!parking_manager) return res.status(404).json(make_obj_data(true, 'Không tìm thấy quản lý bãi đỗ xe'));
+
+            const user = await db.User.findByPk(req.token.id);
+
+            if (user.User_ID != parking_manager.User_ID && user.Role != 'admin')
+                return res
+                    .status(400)
+                    .json(
+                        make_obj_data(
+                            true,
+                            'Bạn không có quyền sửa đổi thông tin quản lý bãi đỗ xe của người quản lý khác',
+                        ),
+                    );
+
+            if (parking_manager.User_ID == user.User_ID && user.Role == 'admin')
+                return res.status(400).json(make_obj_data(true, 'Admin không có quyền cho phép xe ra vào'));
+
+            parking_manager.Is_Managing = req.body.Is_Managing;
+            await parking_manager.save();
+
+            return res.status(200).json(make_obj_data(false, 'Cập nhật thông tin quản lý bãi đỗ xe thành công'));
         } catch (error) {
             return res.status(500).json(make_obj_data(true, 'Cập nhật thông tin quản lý bãi đỗ xe thất bại'));
         }
     },
 
-    // [DELETE] api/parking_manager/:manager_id/:parking_id
+    // [DELETE] /api/parking_manager/:user_id/:parking_id
     async delete_parking_manager(req, res) {
         try {
-            const Manager_ID = req.params.manager_id;
-            const Parking_ID = req.params.parking_id;
-
             const result = await db.Parking_Manager.destroy({
-                where: { Manager_ID, Parking_ID },
+                where: { User_ID: req.params.user_id, Parking_ID: req.params.parking_id },
             });
 
             if (result === 1) {

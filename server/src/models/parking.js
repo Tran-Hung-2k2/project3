@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             Address: DataTypes.STRING,
+            Number_Of_Vehicles: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                defaultValue: 0,
+            },
             Max_Space: {
                 type: DataTypes.INTEGER.UNSIGNED,
                 defaultValue: 0,

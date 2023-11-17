@@ -58,6 +58,8 @@ const auth_controller = {
                 httpOnly: true,
             });
 
+            console.log(user);
+
             return res.status(200).json(make_obj_data(false, 'Đăng nhập thành công', user));
         } catch (error) {
             return res.status(500).json(make_obj_data(true, 'Đăng nhập thất bại'));

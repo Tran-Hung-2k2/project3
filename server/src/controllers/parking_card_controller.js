@@ -60,7 +60,7 @@ const parking_controller = {
         }
     },
 
-    // [PUT] /api/parking_card/:id
+    // [PATCH] /api/parking_card/:id
     async update_parking_card(req, res) {
         try {
             const parking_card = await db.Parking_Card.findByPk(req.params.id);

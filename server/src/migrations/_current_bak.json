@@ -21,13 +21,6 @@
                     "field": "Address",
                     "seqType": "Sequelize.STRING"
                 },
-                "Number_Of_Vehicles": {
-                    "defaultValue": {
-                        "value": 0
-                    },
-                    "field": "Number_Of_Vehicles",
-                    "seqType": "Sequelize.INTEGER.UNSIGNED"
-                },
                 "Max_Space": {
                     "defaultValue": {
                         "value": 0
@@ -284,5 +277,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 1
 }

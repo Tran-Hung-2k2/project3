@@ -1,4 +1,4 @@
-const make_obj_data = (is_error = false, message = 'Thành công', ...data) => {
+const make_obj_data = (is_error = false, message = 'Thành công', data, ...rest_data) => {
     if (typeof is_error !== 'boolean') {
         throw new Error('Tham số is_error phải là kiểu boolean');
     }
@@ -10,10 +10,11 @@ const make_obj_data = (is_error = false, message = 'Thành công', ...data) => {
     return {
         is_error,
         message,
+        data,
         details: {
             body: [{ message }],
         },
-        ...data,
+        ...rest_data,
     };
 };
 

@@ -16,12 +16,16 @@ const parking_controller = {
     async add_parking(req, res) {
         try {
             const { Parking_Name, Address, Max_Space } = req.body;
-            if (Parking_Name) return res.status(400).json(make_obj_data(true, 'Thiếu các trường bắt buộc'));
 
             const parking = await db.Parking.create({
                 Parking_Name,
                 Address,
                 Max_Space,
+            });
+
+            await db.Parking_Manager.create({
+                User_ID: req.token.id,
+                Parking_ID: parking.Parking_ID,
             });
 
             return res.status(201).json(make_obj_data(false, 'Thêm bãi đỗ xe mới thành công', parking));
@@ -30,29 +34,22 @@ const parking_controller = {
         }
     },
 
-    // [PUT] api/parking/:id
+    // [PATCH] api/parking/:id
     async update_parking(req, res) {
         try {
-            const Parking_ID = req.params.id;
-            const { Parking_Name, Address, Max_Space } = req.body;
+            const parking = await db.Parking.findByPk(req.params.id);
+            if (!parking) return res.status(404).json(make_obj_data(true, 'Không tìm thấy bãi đỗ xe'));
+            const { Parking_Name, Address, Max_Space, Number_Of_Vehicles } = req.body;
 
-            const updated_parking = {
-                Parking_ID,
-                Parking_Name,
-                Address,
-                Max_Space,
-            };
+            parking.Parking_Name = Parking_Name;
+            parking.Address = Address;
+            parking.Number_Of_Vehicles = Number_Of_Vehicles;
+            parking.Max_Space = Max_Space;
+            await parking.save();
 
-            const result = await db.Parking.update(updated_parking, {
-                where: { Parking_ID },
-            });
-
-            if (result[0] === 1) {
-                return res.status(200).json(make_obj_data(false, 'Cập nhật thông tin bãi đỗ xe thành công'));
-            } else {
-                return res.status(404).json(make_obj_data(true, 'Không tìm thấy bãi đỗ xe'));
-            }
+            return res.status(200).json(make_obj_data(false, 'Cập nhật thông tin bãi đỗ xe thành công'));
         } catch (error) {
+            console.log(error);
             return res.status(500).json(make_obj_data(true, 'Cập nhật thông tin bãi đỗ xe thất bại'));
         }
     },
