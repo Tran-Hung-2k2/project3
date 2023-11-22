@@ -16,7 +16,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2023-11-13T20:34:00.102Z",
+    "created": "2023-11-21T08:12:02.460Z",
     "comment": ""
 };
 
@@ -39,6 +39,11 @@ var migrationCommands = [{
                 "Address": {
                     "type": Sequelize.STRING,
                     "field": "Address"
+                },
+                "Number_Of_Vehicles": {
+                    "type": Sequelize.INTEGER.UNSIGNED,
+                    "field": "Number_Of_Vehicles",
+                    "defaultValue": 0
                 },
                 "Max_Space": {
                     "type": Sequelize.INTEGER.UNSIGNED,

@@ -6,9 +6,6 @@
         "host": "localhost",
         "logging": false,
         "dialect": "mysql",
-        "dialectOptions": {
-            "useUTC": false
-        },
         "timezone": "+07:00",
         "port": 3306
     },

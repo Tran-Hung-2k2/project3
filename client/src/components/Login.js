@@ -33,7 +33,7 @@ export default function Login() {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                alert(data.message);
+                alert(data.details.body[0].message);
             })
             .catch((error) => console.log(error));
     };

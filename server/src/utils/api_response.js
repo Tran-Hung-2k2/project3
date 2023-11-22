@@ -1,4 +1,4 @@
-const make_obj_data = (is_error = false, message = 'Thành công', data, ...rest_data) => {
+const api_response = (is_error = false, message = 'Thành công', data, ...rest_data) => {
     if (typeof is_error !== 'boolean') {
         throw new Error('Tham số is_error phải là kiểu boolean');
     }
@@ -18,4 +18,4 @@ const make_obj_data = (is_error = false, message = 'Thành công', data, ...rest
     };
 };
 
-export default make_obj_data;
+export default api_response;
