@@ -6,7 +6,7 @@
     "main": "server.js",
     "scripts": {
         "start": "nodemon --exec babel-node server/server.js",
-        "client": "cd client && npm start",
+        "client": "cd client && npm run dev",
         "build": "npm install && cd client && npm install && npm run build",
         "migrate": "cd server/src && npx sequelize-cli db:migrate",
         "migrate:undo": "cd server/src && npx sequelize-cli db:migrate:undo:all",
