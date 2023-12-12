@@ -12,7 +12,20 @@ const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+
+app.use(
+    cors({
+        origin: ['https://localhost:5173', 'http://localhost:5173'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+        allowedHeaders: [
+            'set-cookie',
+            'Content-Type',
+            'Access-Control-Allow-Origin',
+            'Access-Control-Allow-Credentials',
+        ],
+    }),
+);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
