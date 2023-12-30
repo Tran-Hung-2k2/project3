@@ -12,6 +12,12 @@ const reducer = (state = initialState, action) => {
                 user: action.payload,
             };
 
+        case type.UPDATE_USER:
+            return {
+                ...state,
+                user: action.payload,
+            };
+
         case type.LOGOUT:
             return {
                 ...initialState,

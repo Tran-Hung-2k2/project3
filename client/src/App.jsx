@@ -1,15 +1,24 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 
 import routes from './routes/router';
+import AuthLayout from './layout/AuthLayout';
+import ManagerLayout from './layout/ManagerLayout';
 
-const SignIn = lazy(() => import('./pages/SignIn'));
-const SignUp = lazy(() => import('./pages/SignUp'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const Loader = lazy(() => import('./components/Loader'));
-const RequireOrg = lazy(() => import('./components/RequireOrg'));
-const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import VerifySignup from './pages/VerifySignup';
+import ForgetPassword from './pages/ForgetPassword';
+import VerifyForgetPassword from './pages/VerifyForgetPassword';
+import NotFound from './pages/NotFound';
+
+import RequireManager from './components/RequireManager';
+import Loader from './components/Loader';
+import RequireUser from './components/RequireUser';
+import RequireSignin from './components/RequireSignin';
+
+const UserProfile = lazy(() => import('./pages/UserProfile'));
+const ChangePassword = lazy(() => import('./pages/ChangePassword'));
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -22,13 +31,36 @@ function App() {
         <Loader />
     ) : (
         <>
-            <Toaster position="top-right" reverseOrder={false} containerClassName="overflow-auto" />
             <Routes>
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route element={<RequireOrg />}>
-                    <Route element={<DefaultLayout />}>
-                        <Route path="/" element={<Navigate to="/course/manager" />} />
+                <Route path="/" element={<Navigate to="/user/manager" />} />
+                <Route path="/verify_signup" element={<VerifySignup />} />
+                <Route element={<AuthLayout />}>
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/forget_passord" element={<ForgetPassword />} />
+                    <Route path="/verify_forget_password" element={<VerifyForgetPassword />} />
+                    <Route element={<RequireSignin />}>
+                        <Route
+                            path="/change_password"
+                            element={
+                                <Suspense fallback={<Loader />}>
+                                    <ChangePassword />
+                                </Suspense>
+                            }
+                        />
+                    </Route>
+                </Route>
+
+                <Route element={<RequireManager />}>
+                    <Route element={<ManagerLayout />}>
+                        <Route
+                            path="/profile"
+                            element={
+                                <Suspense fallback={<Loader />}>
+                                    <UserProfile />
+                                </Suspense>
+                            }
+                        />
                         {routes.map((routes, index) => {
                             const { path, component: Component } = routes;
                             return (

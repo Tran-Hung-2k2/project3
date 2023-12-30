@@ -6,7 +6,7 @@ const validation = {
     // [POST] api/parking/
     add_parking: () => ({
         body: Joi.object({
-            Parking_Name: Joi.string()
+            Name: Joi.string()
                 .required()
                 .messages({
                     ...messages,
@@ -31,7 +31,7 @@ const validation = {
     // [PATCH] api/parking/:id
     update_parking: () => ({
         body: Joi.object({
-            Parking_Name: Joi.string().messages({
+            Name: Joi.string().messages({
                 ...messages,
             }),
             Address: Joi.string().messages({

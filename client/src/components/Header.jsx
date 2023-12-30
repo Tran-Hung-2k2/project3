@@ -2,7 +2,6 @@ import { CgProfile } from 'react-icons/cg';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { PiPassword } from 'react-icons/pi';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import action from '../redux/auth/auth.action';
@@ -10,7 +9,6 @@ import avatar from '../assets/images/avatar.jpg';
 
 const Header = () => {
     const { user } = useSelector((state) => state.auth);
-    const { categories } = useSelector((state) => state.category);
 
     const dispatch = useDispatch();
 
@@ -21,17 +19,9 @@ const Header = () => {
                     <input
                         name="Name"
                         className="flex-1 input input-bordered join-item"
-                        placeholder="Nhập để tìm kiếm khóa học"
+                        placeholder="Nhập để tìm kiếm bãi đỗ xe"
                     />
                 </div>
-                <select name="Category_ID" className="select select-bordered join-item">
-                    <option value="">Tất cả</option>
-                    {categories.map((category, index) => (
-                        <option key={index} value={category.Category_ID}>
-                            {category.Name}
-                        </option>
-                    ))}
-                </select>
                 <div className="indicator">
                     <span className="font-bold shadow-lg bg-slate-100 indicator-item badge badge-secondary">mới</span>
                     <button type="submit" className="btn btn-primary join-item">
@@ -47,8 +37,12 @@ const Header = () => {
                         <p className="mr-2 text-sm">{user.Role}</p>
                     </span>
                     <div tabIndex={0} role="button" className="inline-block btn btn-ghost btn-circle avatar">
-                        <div className="w-12 border-2 rounded-full shadow border-primary">
-                            <img alt="Avatar" src={user.Avatar || avatar} />
+                        <div>
+                            <img
+                                className="w-12 h-12 border-2 rounded-full shadow border-primary"
+                                alt="Avatar"
+                                src={user.Avatar || avatar}
+                            />
                         </div>
                     </div>
 
@@ -59,7 +53,7 @@ const Header = () => {
                             </a>
                         </li>
                         <li>
-                            <a href="/setting" className="text-lg hover:text-lime-700">
+                            <a href="/change_password" className="text-lg hover:text-lime-700">
                                 <PiPassword className="w-5 h-5" /> Đổi mật khẩu
                             </a>
                         </li>

@@ -11,16 +11,7 @@ const controller = {
 
     // [POST] api/parking_record/
     add_parking_record: async_wrap(async (req, res) => {
-        const { Parking_ID, Card_ID, Record_Image, Action } = req.body;
-        if ((Parking_ID, Card_ID, Record_Image, Action))
-            return res.status(400).json(api_response(true, 'Thiếu các trường bắt buộc'));
-
-        const parking_record = await db.Parking_Record.create({
-            Parking_ID,
-            Card_ID,
-            Record_Image,
-            Action,
-        });
+        const parking_record = await db.Parking_Record.create(req.body);
 
         return res.status(201).json(api_response(false, 'Thêm thông tin gửi xe mới thành công', parking_record));
     }),

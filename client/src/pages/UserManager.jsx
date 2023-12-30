@@ -14,7 +14,7 @@ import confirm from '../utils/confirm';
 const UserManager = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [status, setStatus] = useState(label.user.APPROVAL);
+    const [status, setStatus] = useState(label.user.ACTIVE);
     const [sort, setSort] = useState({ field: 'Name', dimension: 'asc' });
     const [count, setCount] = useState({});
 
@@ -58,20 +58,15 @@ const UserManager = () => {
                     <div className="m-6">
                         <Indicator
                             primaryColor="primary"
-                            label="Đã duyệt"
-                            active={status == label.user.APPROVAL}
-                            subLabel={count[label.user.APPROVAL] || 0}
-                            onClick={() => setStatus(label.user.APPROVAL)}
+                            className="bg-white"
+                            label="Bình thường"
+                            active={status == label.user.ACTIVE}
+                            subLabel={count[label.user.ACTIVE] || 0}
+                            onClick={() => setStatus(label.user.ACTIVE)}
                         />
                         <Indicator
                             primaryColor="primary"
-                            label="Chờ xét duyệt"
-                            active={status == label.user.PENDING_APPROVAL}
-                            subLabel={count[label.user.PENDING_APPROVAL] || 0}
-                            onClick={() => setStatus(label.user.PENDING_APPROVAL)}
-                        />
-                        <Indicator
-                            primaryColor="primary"
+                            className="bg-white"
                             label="Đã khóa"
                             active={status == label.user.LOCK}
                             subLabel={count[label.user.LOCK] || 0}
@@ -86,9 +81,9 @@ const UserManager = () => {
                             active={sort.field == 'Name'}
                             subLabel={
                                 sort.dimension == 'asc' ? (
-                                    <FaArrowDownAZ className="w-4 h-4" />
+                                    <FaArrowDownAZ className="w-4 h-4 text-white" />
                                 ) : (
-                                    <FaArrowUpAZ className="w-4 h-4" />
+                                    <FaArrowUpAZ className="w-4 h-4 text-white" />
                                 )
                             }
                             onClick={() => {
@@ -102,9 +97,9 @@ const UserManager = () => {
                             active={sort.field == 'Email'}
                             subLabel={
                                 sort.dimension == 'asc' ? (
-                                    <FaArrowDownAZ className="w-4 h-4" />
+                                    <FaArrowDownAZ className="w-4 h-4 text-white" />
                                 ) : (
-                                    <FaArrowUpAZ className="w-4 h-4" />
+                                    <FaArrowUpAZ className="w-4 h-4 text-white" />
                                 )
                             }
                             onClick={() => {
@@ -118,9 +113,9 @@ const UserManager = () => {
                             active={sort.field == 'updatedAt'}
                             subLabel={
                                 sort.dimension == 'asc' ? (
-                                    <FaArrowDownAZ className="w-4 h-4" />
+                                    <FaArrowDownAZ className="w-4 h-4 text-white" />
                                 ) : (
-                                    <FaArrowUpAZ className="w-4 h-4" />
+                                    <FaArrowUpAZ className="w-4 h-4 text-white" />
                                 )
                             }
                             onClick={() => {
@@ -170,7 +165,7 @@ const UserManager = () => {
                                         </td>
                                         <td>{user.Role}</td>
                                         <th>
-                                            {status == label.user.APPROVAL && user.Role != label.role.ADMIN && (
+                                            {status == label.user.ACTIVE && user.Role != label.role.ADMIN && (
                                                 <button
                                                     onClick={async () => {
                                                         await service.updateUser(
@@ -184,7 +179,7 @@ const UserManager = () => {
                                                     Khóa
                                                 </button>
                                             )}
-                                            {status == label.user.APPROVAL && user.Role != label.role.ADMIN && (
+                                            {status == label.user.ACTIVE && user.Role != label.role.ADMIN && (
                                                 <button
                                                     onClick={() => deleteUser(user)}
                                                     className="mx-1 text-white btn btn-error btn-xs"
@@ -192,28 +187,14 @@ const UserManager = () => {
                                                     Xóa
                                                 </button>
                                             )}
-                                            {status == label.user.PENDING_APPROVAL && (
-                                                <button
-                                                    onClick={async () => {
-                                                        await service.updateUser(
-                                                            { Status: label.user.APPROVAL },
-                                                            user.User_ID,
-                                                        );
-                                                        setStatus(label.user.APPROVAL);
-                                                    }}
-                                                    className="mx-1 text-white btn btn-success btn-xs"
-                                                >
-                                                    Duyệt
-                                                </button>
-                                            )}
                                             {status == label.user.LOCK && (
                                                 <button
                                                     onClick={async () => {
                                                         await service.updateUser(
-                                                            { Status: label.user.APPROVAL },
+                                                            { Status: label.user.ACTIVE },
                                                             user.User_ID,
                                                         );
-                                                        setStatus(label.user.APPROVAL);
+                                                        setStatus(label.user.ACTIVE);
                                                     }}
                                                     className="mx-1 text-white btn btn-success btn-xs"
                                                 >

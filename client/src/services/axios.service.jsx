@@ -5,18 +5,19 @@ import notify from '../utils/notify';
 const SERVER_URL = import.meta.env.VITE_REACT_APP_API_KEY;
 
 const api_notify = [
-    { url: '/api/auth/login', methods: ['post'] },
-    { url: '/api/auth/logout', methods: ['post'] },
+    { url: '/api/auth', methods: ['post'] },
     { url: '/api/course', methods: ['post', 'patch', 'delete'] },
     { url: '/api/week', methods: ['post', 'patch', 'delete'] },
     { url: '/api/category', methods: ['post', 'patch', 'delete'] },
     { url: '/api/lecture', methods: ['post', 'patch', 'delete'] },
     { url: '/api/lesson', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/completed_lesson', methods: ['post', 'delete'] },
     { url: '/api/user', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/participating_course', methods: ['post', 'patch', 'delete'] },
 ];
 
 const service = axios.create({
-    baseURL: SERVER_URL || 'http://localhost:8080',
+    baseURL: SERVER_URL || 'https://coursera-6wby.onrender.com',
 });
 
 service.interceptors.response.use(

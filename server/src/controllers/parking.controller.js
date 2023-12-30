@@ -24,7 +24,8 @@ const controller = {
     // [PATCH] api/parking/:id
     update_parking: async_wrap(async (req, res) => {
         const parking = await db.Parking.findByPk(req.params.id);
-        if (!parking) return res.status(404).json(api_response(true, 'Không tìm thấy bãi đỗ xe'));
+        if (!parking) throw new APIError(404, 'Không tìm thấy bãi đỗ xe');
+
         parking.Parking_Name = req.body.Parking_Name;
         parking.Address = req.body.Address;
         parking.Max_Space = req.body.Max_Space;
@@ -40,7 +41,7 @@ const controller = {
         });
 
         if (result === 1) return res.status(200).json(api_response(false, 'Xóa bãi đỗ xe thành công'));
-        else return res.status(404).json(api_response(true, 'Không tìm thấy bãi đỗ xe'));
+        else throw new APIError(404, 'Không tìm thấy bãi đỗ xe');
     }),
 };
 

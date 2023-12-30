@@ -20,15 +20,16 @@ const controller = {
     // [GET] /api/parking_card/:id
     get_parking_card_by_id: async_wrap(async (req, res) => {
         const parking_card = await db.Parking_Card.findByPk(req.params.id);
-        if (!parking_card) return res.status(404).json(api_response(true, 'Không tìm thấy thẻ gửi xe'));
+        if (!parking_card) throw new APIError(404, 'Không tìm thấy thẻ gửi xe');
+
         return res.status(200).json(api_response(false, 'Lấy thông tin thẻ gửi xe thành công', parking_card));
     }),
 
     // [POST] /api/parking_card/
     add_parking_card: async_wrap(async (req, res) => {
         const user = await db.User.findOne({ where: { Email: req.body.Email } });
-        if (!user && req.body.Email)
-            return res.status(400).json(api_response(true, 'Email chưa được đăng ký tài khoản trước đó'));
+        if (!user && req.body.Email) throw new APIError(400, 'Email chưa được đăng ký tài khoản trước đó');
+
         const parking_card = await db.Parking_Card.create({
             User_ID: user ? user.User_ID : null,
         });
@@ -38,7 +39,7 @@ const controller = {
     // [PATCH] /api/parking_card/:id
     update_parking_card: async_wrap(async (req, res) => {
         const parking_card = await db.Parking_Card.findByPk(req.params.id);
-        if (!parking_card) return res.status(404).json(api_response(true, 'Không tìm thấy thẻ gửi xe'));
+        if (!parking_card) throw new APIError(404, 'Không tìm thấy thẻ gửi xe');
 
         parking_card.Is_Lock = req.body.Is_Lock;
         await parking_card.save();
@@ -53,7 +54,7 @@ const controller = {
         });
 
         if (result === 1) return res.status(200).json(api_response(false, 'Xóa thẻ gửi xe thành công'));
-        else return res.status(404).json(api_response(true, 'Không tìm thấy thẻ gửi xe'));
+        else throw new APIError(404, 'Không tìm thấy thẻ gửi xe');
     }),
 };
 

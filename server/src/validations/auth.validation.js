@@ -6,7 +6,7 @@ const validation = {
     // [POST] /api/auth/register/
     register: () => ({
         body: Joi.object({
-            User_Name: Joi.string()
+            Name: Joi.string()
                 .trim()
                 .required()
                 .label('Tên người dùng')
@@ -20,7 +20,7 @@ const validation = {
                 .messages({
                     ...messages,
                 }),
-            User_Password: Joi.string()
+            Password: Joi.string()
                 .required()
                 .label('Mật khẩu')
                 .messages({
@@ -70,7 +70,7 @@ const validation = {
                 .messages({
                     ...messages,
                 }),
-            User_Password: Joi.string()
+            Password: Joi.string()
                 .required()
                 .label('Mật khẩu')
                 .messages({
@@ -98,7 +98,7 @@ const validation = {
                 .messages({
                     ...messages,
                 }),
-            User_Password: Joi.string()
+            Password: Joi.string()
                 .required()
                 .label('Mật khẩu mới')
                 .messages({

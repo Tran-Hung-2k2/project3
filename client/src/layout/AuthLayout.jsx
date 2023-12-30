@@ -1,12 +1,15 @@
-import image from '../assets/images/signin.jpg';
+import { NavLink, Outlet } from 'react-router-dom';
+import image from '../assets/images/signin.png';
 
-export default function SignIn({ children }) {
+export default function AuthLayout() {
     return (
         <div className="flex items-center justify-center w-screen h-screen">
-            <div className="flex flex-col items-center justify-center w-3/5 gap-10">
-                <img className="w-4/5 rounded-lg shadow-lg" src={image} alt="Coursera" />
-            </div>
-            {children}
+            <NavLink to="/" className="w-3/5">
+                <div className="w-full p-32">
+                    <img className=" rounded-lg border border-primary" src={image} alt="Bách khoa Hà Nội" />
+                </div>
+            </NavLink>
+            <Outlet />
         </div>
     );
 }

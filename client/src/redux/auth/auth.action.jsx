@@ -11,6 +11,13 @@ const action = {
         if (callback) callback();
     },
 
+    updateUser: (data) => {
+        return {
+            type: type.UPDATE_USER,
+            payload: data,
+        };
+    },
+
     logout: () => async (dispatch) => {
         await service.logout();
 

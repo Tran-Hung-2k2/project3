@@ -51,7 +51,7 @@ const controller = {
                     api_response(true, 'Bạn không có quyền sửa đổi thông tin quản lý bãi đỗ xe của người quản lý khác'),
                 );
         if (manager.User_ID == parking_manager.User_ID && manager.Role == 'admin')
-            return res.status(400).json(api_response(true, 'Admin không có quyền cho phép xe ra vào'));
+            throw new APIError(400, 'Admin không có quyền cho phép xe ra vào');
 
         parking_manager.Is_Managing = req.body.Is_Managing;
         await parking_manager.save();
@@ -66,7 +66,7 @@ const controller = {
         });
 
         if (result === 1) return res.status(200).json(api_response(false, 'Xóa quản lý bãi đỗ xe thành công'));
-        else return res.status(404).json(api_response(true, 'Không tìm thấy quản lý bãi đỗ xe'));
+        else throw new APIError(404, 'Không tìm thấy quản lý bãi đỗ xe');
     }),
 };
 

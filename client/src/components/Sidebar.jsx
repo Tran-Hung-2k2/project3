@@ -1,10 +1,11 @@
 import { GrUserManager } from 'react-icons/gr';
-import { SiCoursera } from 'react-icons/si';
-import { BiCategory } from 'react-icons/bi';
+import { GoArrowSwitch } from 'react-icons/go';
+import { LuParkingCircle } from 'react-icons/lu';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import label from '../constants/label';
-import { useSelector } from 'react-redux';
+import favicon from '../assets/images/favicon.ico';
 
 const menuItem = [
     { label: 'MENU' },
@@ -17,47 +18,47 @@ const menuItem = [
                 title: 'Quản lý người dùng',
                 role: [label.role.ADMIN],
             },
+            {
+                path: '/user/add',
+                title: 'Thêm người quản lý',
+                role: [label.role.ADMIN],
+            },
+            {
+                path: '/user/parking_manager',
+                title: 'Phân công người quản lý',
+                role: [label.role.ADMIN],
+            },
         ],
         icon: <GrUserManager />,
     },
     {
-        title: 'Khóa học',
-        role: [label.role.ADMIN, label.role.ORGANIZATION],
+        title: 'Ra vào bãi đỗ xe',
+        role: [label.role.ADMIN, label.role.MANAGER],
         child: [
             {
-                path: '/course/manager',
-                title: 'Quản lý khóa học',
-                role: [label.role.ADMIN, label.role.ORGANIZATION],
-            },
-            {
-                path: '/course/add',
-                title: 'Thêm khóa học',
-                role: [label.role.ADMIN, label.role.ORGANIZATION],
-            },
-            {
-                path: '/course/approval',
-                title: 'Xét duyệt học viên',
-                role: [label.role.ADMIN, label.role.ORGANIZATION],
+                path: '/parking/in-out',
+                title: 'Quản lý ra vào',
+                role: [label.role.ADMIN, label.role.MANAGER],
             },
         ],
-        icon: <SiCoursera />,
+        icon: <GoArrowSwitch />,
     },
     {
-        title: 'Danh mục khóa học',
+        title: 'Bãi đỗ xe',
         role: [label.role.ADMIN],
         child: [
             {
                 path: '/category/manager',
-                title: 'Quản lý danh mục',
+                title: 'Quản lý bãi đỗ xe',
                 role: [label.role.ADMIN],
             },
             {
                 path: '/category/add',
-                title: 'Thêm danh mục',
+                title: 'Thêm bãi đỗ xe',
                 role: [label.role.ADMIN],
             },
         ],
-        icon: <BiCategory />,
+        icon: <LuParkingCircle />,
     },
     {
         label: 'OTHER',
@@ -79,7 +80,8 @@ const Sidebar = () => {
                 {/* <!-- SIDEBAR HEADER --> */}
                 <div className="flex items-center justify-between gap-2 px-6 pt-5.5">
                     <NavLink to="/" className="flex items-center justify-center w-full">
-                        <p className="px-0 py-3 text-4xl font-bold text-primary">Coursera</p>
+                        <img className="rounded-sm border border-primary w-10 h-10 mr-4" src={favicon} alt="Parking" />
+                        <p className="px-0 py-3 text-4xl font-bold text-primary">HUST</p>
                     </NavLink>
                 </div>
                 {/* <!-- SIDEBAR HEADER --> */}

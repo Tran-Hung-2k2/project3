@@ -9,7 +9,7 @@ const validation = {
     },
 
     confirmPassword: (value, helpers) => {
-        if (value.User_Password !== value.Confirm_Password)
+        if (value.Password !== value.Confirm_Password)
             return helpers.message('Mật khẩu xác nhận không khớp với Mật khẩu đã nhập');
         return value;
     },

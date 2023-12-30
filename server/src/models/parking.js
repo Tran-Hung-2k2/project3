@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
          * Tệp `models/index` sẽ tự động gọi phương thức này.
          */
         static associate(models) {
-            Parking.belongsToMany(models.User, {
-                through: 'Parking_Manager',
+            Parking.hasMany(models.Parking_Manager, {
                 foreignKey: 'Parking_ID',
-                otherKey: 'User_ID',
+                onDelete: 'CASCADE',
             });
 
             Parking.hasMany(models.Parking_Record, {
                 foreignKey: 'Parking_ID',
+                onDelete: 'CASCADE',
             });
         }
     }
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
-            Parking_Name: {
+            Name: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
