@@ -9,10 +9,10 @@ const controller = {
         return res.status(200).json(api_response(false, 'Lấy danh sách thẻ gửi xe thành công', parking_cards));
     }),
 
-    // [GET] /api/parking_card/user/:id
+    // [GET] /api/parking_card/user
     get_parking_card_by_user: async_wrap(async (req, res) => {
         const parking_cards = await db.Parking_Card.findAll({
-            where: { User_ID: req.params.id },
+            where: { User_ID: req.token.id },
         });
         return res.status(200).json(api_response(false, 'Lấy danh sách thẻ gửi xe thành công', parking_cards));
     }),

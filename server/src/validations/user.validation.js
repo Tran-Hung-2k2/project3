@@ -22,6 +22,26 @@ const validation = {
             .prefs({ messages }),
     }),
 
+    // [POST] /api/user/add
+    add_manager: () => ({
+        body: Joi.object({
+            Name: Joi.string().trim().required().label('Tên người dùng'),
+            Email: Joi.string().email().required().external(cv.isNotRegistered),
+            Password: Joi.string().required().label('Mật khẩu'),
+            Confirm_Password: Joi.string().required().label('Mật khẩu xác nhận'),
+            Gender: Joi.string()
+                .valid(...Object.values(label.gender))
+                .label('Giới tính'),
+            Birthday: Joi.date().label('Ngày sinh'),
+            Phone_Number: Joi.string().required().custom(cv.phoneNumber).label('Số điện thoại'),
+            Address: Joi.string().label('Địa chỉ').required(),
+            Role: Joi.string().required().label('Vai trò'),
+        })
+            .unknown(false)
+            .custom(cv.confirmPassword)
+            .prefs({ messages }),
+    }),
+
     // [PATCH] /api/user/:id
     update_user: () => ({
         params: Joi.object({
@@ -33,6 +53,17 @@ const validation = {
             Status: Joi.string()
                 .valid(...Object.values(label.user))
                 .label('Trạng thái tài khoản'),
+            Balance: Joi.number().positive().required().label('Số tiền'),
+        })
+            .unknown(false)
+            .prefs({ messages }),
+    }),
+
+    // [PATCH] /api/user/balance
+    add_balance: () => ({
+        body: Joi.object({
+            Email:  Joi.string().email().required(),
+            Balance: Joi.number().positive().required().label('Số tiền'),
         })
             .unknown(false)
             .prefs({ messages }),
@@ -43,6 +74,12 @@ const validation = {
         body: Joi.object({
             Name: Joi.string().trim().label('Tên người dùng'),
             Avatar: Joi.string().label('Ảnh đại diện'),
+            Gender: Joi.string()
+                .valid(...Object.values(label.gender))
+                .label('Giới tính'),
+            Birthday: Joi.date().label('Ngày sinh'),
+            Phone_Number: Joi.string().custom(cv.phoneNumber).label('Số điện thoại'),
+            Address: Joi.string().label('Địa chỉ'),
         })
             .unknown(false)
             .prefs({ messages }),

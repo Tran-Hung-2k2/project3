@@ -12,8 +12,11 @@ route
     .post(validate(vld.add_parking_manager()), mdw.verify_admin, ctrl.add_parking_manager);
 
 route
+    .route('/:id')
+    .patch(validate(vld.update_parking_manager()), mdw.verify_admin_and_manager, ctrl.update_parking_manager);
+
+route
     .route('/:user_id/:parking_id')
-    .patch(validate(vld.update_parking_manager()), mdw.verify_admin_and_manager, ctrl.update_parking_manager)
-    .delete(mdw.verify_admin, ctrl.delete_parking_manager);
+    .delete(validate(vld.delete_parking_manager()), mdw.verify_admin, ctrl.delete_parking_manager);
 
 export default route;

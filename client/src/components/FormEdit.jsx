@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import ButtonBack from './ButtonBack';
-import TextEditor from './TextEditor';
 import Loader from './Loader';
 
 function FormEdit({ fields, title, onSubmit, getData, children }) {
@@ -50,15 +49,6 @@ function FormEdit({ fields, title, onSubmit, getData, children }) {
                                     </label>
                                     {(() => {
                                         switch (field.type) {
-                                            case 'editor':
-                                                return (
-                                                    <TextEditor
-                                                        {...field}
-                                                        value={state[field.id]}
-                                                        onChange={handleChange}
-                                                        className="h-fit"
-                                                    />
-                                                );
                                             case 'textarea':
                                                 return (
                                                     <textarea

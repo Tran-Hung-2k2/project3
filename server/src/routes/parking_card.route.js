@@ -18,7 +18,7 @@ route
     .delete(mdw.verify_admin, ctrl.delete_parking_card);
 
 route
-    .route('/user/:id')
-    .get(validate(vld.get_parking_card_by_user()), mdw.verify_admin_and_user, ctrl.get_parking_card_by_user);
+    .route('/user')
+    .get(mdw.verify_user, ctrl.get_parking_card_by_user);
 
 export default route;

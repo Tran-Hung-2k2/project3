@@ -11,7 +11,7 @@ module.exports = {
 
         const userData = [
             {
-                User_ID: 'a1234567-89ab-4cde-81gh-123456789001',
+                User_ID: 'ebf65320-86f7-4268-a634-4b24e52f700e',
                 Name: 'Trần Việt Hùng',
                 Email: 'tranviethung912002@gmail.com',
                 Password: hashed_admin_password,
@@ -19,7 +19,7 @@ module.exports = {
                 Birthday: '2002-01-09',
                 Phone_Number: '0983394837',
                 Address: 'Hà Nội',
-                Avatar: 'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj',
+                Avatar: 'https://i.pinimg.com/originals/3f/34/b2/3f34b2b917029cc9a0caddaa0a4454fb.png',
                 Balance: 0,
                 Status: label.user.ACTIVE,
                 Role: label.role.ADMIN,
@@ -27,7 +27,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
-                User_ID: 'a1234567-89ab-4cde-8fgh-123456789123',
+                User_ID: '5f3e964e-8d2e-4b6a-9462-80bbdec33ae8',
                 Name: 'Dương Ngọc Hải',
                 Email: 'hai@gmail.com',
                 Password: hashed_manager_password,
@@ -35,7 +35,7 @@ module.exports = {
                 Birthday: '2002-10-10',
                 Phone_Number: '0987654321',
                 Address: 'Hà Nội',
-                Avatar: 'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj',
+                Avatar: 'https://cdn-icons-png.flaticon.com/512/708/708963.png',
                 Balance: 0,
                 Status: label.user.ACTIVE,
                 Role: label.role.MANAGER,
@@ -43,7 +43,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
-                User_ID: 'a1234567-89ab-4cde-8fgh-123456789012',
+                User_ID: '06dab5f6-46bc-46df-9f76-4ed1f019017d',
                 Name: 'Ngô Quốc Khánh',
                 Email: 'khanh@gmail.com',
                 Password: hashed_user_password,

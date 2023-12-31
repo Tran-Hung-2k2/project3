@@ -24,8 +24,18 @@ const service = {
         return response.data;
     },
 
+    addManager: async (data) => (await axios.post('/api/user/add', data, { withCredentials: true })).data,
+
     updateUser: async (data, id) => {
         const response = await axios.patch(`/api/user/${id}`, data, {
+            withCredentials: true,
+        });
+
+        return response.data;
+    },
+
+    addBalance: async (data) => {
+        const response = await axios.patch(`/api/user/balance`, data, {
             withCredentials: true,
         });
 

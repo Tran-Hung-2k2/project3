@@ -4,7 +4,7 @@ function Indicator({ label, active, subLabel, onClick, className, primaryColor }
             <span
                 className={`indicator-item badge badge-${primaryColor} ${
                     active
-                        ? `badge-primary ${className} shadow-lg border border-${primaryColor} text-${primaryColor}`
+                        ? `badge-primary shadow-lg border border-${primaryColor} text-${primaryColor} ${className}`
                         : ''
                 }`}
             >

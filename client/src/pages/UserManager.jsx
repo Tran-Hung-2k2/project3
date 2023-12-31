@@ -15,7 +15,7 @@ const UserManager = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(label.user.ACTIVE);
-    const [sort, setSort] = useState({ field: 'Name', dimension: 'asc' });
+    const [sort, setSort] = useState({ field: 'Role', dimension: 'asc' });
     const [count, setCount] = useState({});
 
     useEffect(() => {
@@ -109,6 +109,22 @@ const UserManager = () => {
                         />
                         <Indicator
                             primaryColor="success"
+                            label="Vai trò"
+                            active={sort.field == 'Role'}
+                            subLabel={
+                                sort.dimension == 'asc' ? (
+                                    <FaArrowDownAZ className="w-4 h-4 text-white" />
+                                ) : (
+                                    <FaArrowUpAZ className="w-4 h-4 text-white" />
+                                )
+                            }
+                            onClick={() => {
+                                if (sort.field != 'Role') setSort({ ...sort, field: 'Role' });
+                                else setSort({ ...sort, dimension: sort.dimension == 'asc' ? 'desc' : 'asc' });
+                            }}
+                        />
+                        <Indicator
+                            primaryColor="success"
                             label="Ngày cập nhật"
                             active={sort.field == 'updatedAt'}
                             subLabel={
@@ -133,6 +149,7 @@ const UserManager = () => {
                                     <th></th>
                                     <th>Họ và tên</th>
                                     <th>Email</th>
+                                    <th>Số dư</th>
                                     <th>Vai trò</th>
                                     <th></th>
                                 </tr>
@@ -160,9 +177,10 @@ const UserManager = () => {
                                             {user.Email}
                                             <br />
                                             <span className="badge badge-ghost badge-sm">
-                                                Ngày tạo: {convertTime(user.createdAt)}
+                                                {user.Phone_Number || 'Chưa cung cấp số điện thoại'}
                                             </span>
                                         </td>
+                                        <td>{user.Balance * 1000 + ' VNĐ'}</td>
                                         <td>{user.Role}</td>
                                         <th>
                                             {status == label.user.ACTIVE && user.Role != label.role.ADMIN && (

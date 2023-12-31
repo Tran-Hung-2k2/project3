@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import routes from './routes/router';
+import adminRoutes from './routes/admin.route';
 import AuthLayout from './layout/AuthLayout';
 import ManagerLayout from './layout/ManagerLayout';
 
@@ -61,8 +61,8 @@ function App() {
                                 </Suspense>
                             }
                         />
-                        {routes.map((routes, index) => {
-                            const { path, component: Component } = routes;
+                        {adminRoutes.map((adminRoute, index) => {
+                            const { path, component: Component } = adminRoute;
                             return (
                                 <Route
                                     key={index}

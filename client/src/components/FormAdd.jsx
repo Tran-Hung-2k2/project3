@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import ButtonBack from './ButtonBack';
-import TextEditor from './TextEditor';
 
 function FormAdd({ fields, title, onSubmit, children }) {
     const fieldsState = fields.reduce(
@@ -33,8 +32,6 @@ function FormAdd({ fields, title, onSubmit, children }) {
                         </label>
                         {(() => {
                             switch (field.type) {
-                                case 'editor':
-                                    return <TextEditor {...field} onChange={handleChange} className="h-fit" />;
                                 case 'textarea':
                                     return (
                                         <textarea

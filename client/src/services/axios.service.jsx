@@ -6,14 +6,10 @@ const SERVER_URL = import.meta.env.VITE_REACT_APP_API_KEY;
 
 const api_notify = [
     { url: '/api/auth', methods: ['post'] },
-    { url: '/api/course', methods: ['post', 'patch', 'delete'] },
-    { url: '/api/week', methods: ['post', 'patch', 'delete'] },
-    { url: '/api/category', methods: ['post', 'patch', 'delete'] },
-    { url: '/api/lecture', methods: ['post', 'patch', 'delete'] },
-    { url: '/api/lesson', methods: ['post', 'patch', 'delete'] },
-    { url: '/api/completed_lesson', methods: ['post', 'delete'] },
     { url: '/api/user', methods: ['post', 'patch', 'delete'] },
-    { url: '/api/participating_course', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/parking', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/parking_card', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/parking_manger', methods: ['post', 'patch', 'delete'] },
 ];
 
 const service = axios.create({

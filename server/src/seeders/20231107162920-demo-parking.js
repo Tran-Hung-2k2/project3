@@ -4,7 +4,7 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         const parkingData = [
             {
-                Parking_ID: 'a1234567-89ab-4cde-8fgh-123456789012',
+                Parking_ID: '4f85c61a-2a20-41ff-b8ed-fbe2940d4c68',
                 Name: 'Sample Parking 1',
                 Address: '123 Main Street',
                 Max_Space: 100,
@@ -12,7 +12,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
-                Parking_ID: 'b2345678-9abc-4def-gh12-345678901234',
+                Parking_ID: '27fe9583-6365-4046-8c3c-021c38a6b351',
                 Name: 'Sample Parking 2',
                 Address: '456 Elm Street',
                 Max_Space: 150,

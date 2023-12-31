@@ -6,16 +6,18 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 
 import auth from './auth/auth.reducer';
+import parking from './parking/parking.reducer';
 
 const persistConfig = {
     key: 'root',
     storage: storage,
     stateReconciler: autoMergeLevel2, // Xem thêm tại mục "Quá trình merge".
-    whitelist: ['auth'],
+    whitelist: ['auth', 'parking'],
 };
 
 const rootReducer = combineReducers({
     auth,
+    parking,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
