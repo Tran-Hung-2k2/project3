@@ -14,7 +14,7 @@ route
 route
     .route('/:id')
     .patch(validate(vld.update_parking()), mdw.verify_admin, ctrl.update_parking)
-    .delete(mdw.verify_admin, ctrl.delete_parking);
+    .delete(validate(vld.delete_parking()),mdw.verify_admin, ctrl.delete_parking);
 
 route
     .route('/num_of_vehicles/:id')

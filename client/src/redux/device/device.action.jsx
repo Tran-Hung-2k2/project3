@@ -1,9 +1,9 @@
-import type from './parking.type';
+import type from './device.type';
 
 const action = {
-    addParking: (id) => {
+    addDevice: (id) => {
         return {
-            type: type.ADD_PARKING,
+            type: type.ADD_DEVICE,
             payload: id,
         };
     },

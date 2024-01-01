@@ -12,7 +12,7 @@ const validation = {
             .prefs({ messages }),
     }),
 
-    // [POST] api/parking/
+    // [POST] /api/parking/
     add_parking: () => ({
         body: Joi.object({
             Name: Joi.string().required(),
@@ -24,7 +24,7 @@ const validation = {
             .prefs({ messages }),
     }),
 
-    // [PATCH] api/parking/:id
+    // [PATCH] /api/parking/:id
     update_parking: () => ({
         params: Joi.object({
             id: Joi.string().required().custom(cv.uuidv4Id),
@@ -53,6 +53,15 @@ const validation = {
 
         body: Joi.object({
             Number_Of_Vehicles: Joi.number().integer().label('Số lượng xe muốn cập nhật'),
+        })
+            .unknown(false)
+            .prefs({ messages }),
+    }),
+
+    // [DELETE] /api/parking/:id
+    delete_parking: () => ({
+        params: Joi.object({
+            id: Joi.string().required().custom(cv.uuidv4Id),
         })
             .unknown(false)
             .prefs({ messages }),

@@ -8,6 +8,7 @@ const api_notify = [
     { url: '/api/auth', methods: ['post'] },
     { url: '/api/user', methods: ['post', 'patch', 'delete'] },
     { url: '/api/parking', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/device', methods: ['post', 'patch', 'delete'] },
     { url: '/api/parking_card', methods: ['post', 'patch', 'delete'] },
     { url: '/api/parking_manger', methods: ['post', 'patch', 'delete'] },
 ];

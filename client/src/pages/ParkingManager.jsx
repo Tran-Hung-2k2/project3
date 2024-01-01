@@ -11,7 +11,7 @@ import confirm from '../utils/confirm';
 import action from '../redux/parking/parking.action';
 import service from '../services/parking.service';
 
-const CategoryManager = () => {
+const ParkingManager = () => {
     const [parkings, setParkings] = useState([]);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
@@ -98,4 +98,4 @@ const CategoryManager = () => {
     );
 };
 
-export default CategoryManager;
+export default ParkingManager;

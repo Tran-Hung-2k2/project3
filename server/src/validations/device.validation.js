@@ -4,28 +4,26 @@ import cv from './custom.validation';
 
 const validation = {
     // [GET] /api/device/
-    get_all_categories: () => ({
+    get_all_device: () => ({
         query: Joi.object({
-            Parking_ID: Joi.string().custom(cv.uuidv4Id),
+            Device_ID: Joi.string().custom(cv.uuidv4Id),
         })
             .unknown(false)
             .prefs({ messages }),
     }),
 
-    // [POST] api/device/
-    add_parking: () => ({
+    // [POST] /api/device/
+    add_device: () => ({
         body: Joi.object({
-            Name: Joi.string().required(),
-            Address: Joi.string(),
-            Charge: Joi.number().integer().min(0),
-            Max_Space: Joi.number().integer().min(0),
+            Parking_ID: Joi.string().allow(null).required().custom(cv.uuidv4Id),
+            Name: Joi.string().label('Tên thiết bị'),
         })
             .unknown(false)
             .prefs({ messages }),
     }),
 
-    // [PATCH] api/device/:id
-    update_parking: () => ({
+    // [PATCH] /api/device/:id
+    update_device: () => ({
         params: Joi.object({
             id: Joi.string().required().custom(cv.uuidv4Id),
         })
@@ -33,26 +31,17 @@ const validation = {
             .prefs({ messages }),
 
         body: Joi.object({
-            Name: Joi.string().label('Tên bãi đỗ xe'),
-            Address: Joi.string().label('Địa chỉ'),
-            Max_Space: Joi.number().integer().min(0).label('Chỗ trống tối đa'),
-            Charge: Joi.number().integer().min(0),
-            Number_Of_Vehicles: Joi.number().integer().min(0).label('Số lượng xe trong bãi'),
+            Name: Joi.string().label('Tên thiết bị'),
+            Parking_ID: Joi.string().custom(cv.uuidv4Id).allow(null),
         })
             .unknown(false)
             .prefs({ messages }),
     }),
 
-    // [PATCH] /api/device/num_of_vehicles/:id
-    update_number_of_vehicles: () => ({
+    // [DELETE] /api/device/:id
+    delete_device: () => ({
         params: Joi.object({
             id: Joi.string().required().custom(cv.uuidv4Id),
-        })
-            .unknown(false)
-            .prefs({ messages }),
-
-        body: Joi.object({
-            Number_Of_Vehicles: Joi.number().integer().label('Số lượng xe muốn cập nhật'),
         })
             .unknown(false)
             .prefs({ messages }),

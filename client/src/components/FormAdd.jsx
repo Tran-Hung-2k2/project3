@@ -68,7 +68,7 @@ function FormAdd({ fields, title, onSubmit, children }) {
                                             {...field}
                                             defaultValue={field.placeholder}
                                         >
-                                            <option disabled>{field.placeholder}</option>
+                                            <option value=''>{field.placeholder}</option>
                                             {field.options.map((option) => (
                                                 <option key={Object.keys(option)[0]} value={Object.keys(option)[0]}>
                                                     {Object.values(option)[0]}

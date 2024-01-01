@@ -7,17 +7,19 @@ import storage from 'redux-persist/lib/storage';
 
 import auth from './auth/auth.reducer';
 import parking from './parking/parking.reducer';
+import device from './device/device.reducer';
 
 const persistConfig = {
     key: 'root',
     storage: storage,
     stateReconciler: autoMergeLevel2, // Xem thêm tại mục "Quá trình merge".
-    whitelist: ['auth', 'parking'],
+    whitelist: ['auth', 'parking', 'device'],
 };
 
 const rootReducer = combineReducers({
     auth,
     parking,
+    device,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
