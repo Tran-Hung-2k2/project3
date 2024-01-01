@@ -10,11 +10,11 @@ function HomeNavigate() {
     return !user ? (
         <Navigate to="/signin" state={{ from: location }} replace />
     ) : user.Role === label.role.ADMIN ? (
-        <Navigate to="/user/manager" state={{ from: location }} replace />
+        <Navigate to="/record/manager" state={{ from: location }} replace />
     ) : user.Role === label.role.MANAGER ? (
         <Navigate to="/parking/in-out" state={{ from: location }} replace />
     ) : (
-        <Navigate to="/card/manager" state={{ from: location }} replace />
+        <Navigate to="/record/manager" state={{ from: location }} replace />
     );
 }
 

@@ -21,7 +21,6 @@ const DeviceManager = () => {
             setLoading(true);
             const res = await service.getAllDevice();
             const sortedDevices = _.orderBy(res.data, ['createdAt', 'Name'], 'asc');
-            console.log(sortedDevices);
             setDevices(sortedDevices);
             setLoading(false);
         };

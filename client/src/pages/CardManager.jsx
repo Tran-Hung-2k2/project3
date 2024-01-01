@@ -30,7 +30,6 @@ const UserManager = () => {
                     : await service.getParkingCardByUser();
 
             const sortedCards = _.orderBy(res.data, sort.field, sort.dimension);
-            console.log(sortedCards);
             const statusCounts = {};
             sortedCards.forEach((card) => {
                 statusCounts[card.Is_Lock] = (statusCounts[card.Is_Lock] || 0) + 1;
@@ -157,79 +156,83 @@ const UserManager = () => {
                     </div>
 
                     <div className="m-6 overflow-x-auto">
-                        <table className="table">
-                            {/* head */}
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Họ và tên</th>
-                                    <th>Email</th>
-                                    <th>ID thẻ gửi xe</th>
-                                    <th>Ngày tạo</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cards.map((card, index) => (
-                                    <tr key={index}>
-                                        <th>
-                                            <label>{index + 1}</label>
-                                        </th>
-                                        <td>
-                                            <div className="flex items-center gap-3">
-                                                <div className="avatar">
-                                                    <div className="w-12 h-12 mask mask-squircle">
-                                                        <img src={card.User.Avatar || avatar} alt="Avatar" />
+                        {cards?.length <= 0 ? (
+                            <div className='flex justify-center font-bold m-6'>Bạn chưa có thẻ gửi xe nào</div>
+                        ) : (
+                            <table className="table">
+                                {/* head */}
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Họ và tên</th>
+                                        <th>Email</th>
+                                        <th>ID thẻ gửi xe</th>
+                                        <th>Ngày tạo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {cards.map((card, index) => (
+                                        <tr key={index}>
+                                            <th>
+                                                <label>{index + 1}</label>
+                                            </th>
+                                            <td>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="avatar">
+                                                        <div className="w-12 h-12 mask mask-squircle">
+                                                            <img src={card.User.Avatar || avatar} alt="Avatar" />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold">{card.User.Name}</div>
+                                                        <div className="text-sm opacity-50">{card.User.Role}</div>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div className="font-bold">{card.User.Name}</div>
-                                                    <div className="text-sm opacity-50">{card.User.Role}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>{card.User.Email}</td>
-                                        <td>{card.Card_ID}</td>
-                                        <td>{convertTime(card.createdAt)}</td>
-                                        <th>
-                                            {status ? (
+                                            </td>
+                                            <td>{card.User.Email}</td>
+                                            <td>{card.Card_ID}</td>
+                                            <td>{convertTime(card.createdAt)}</td>
+                                            <th>
+                                                {status ? (
+                                                    <button
+                                                        onClick={async () => {
+                                                            await service.updateParkingCard(
+                                                                { Is_Lock: false },
+                                                                card.Card_ID,
+                                                            );
+                                                            setStatus(false);
+                                                        }}
+                                                        className="mx-1 text-white btn btn-success btn-xs"
+                                                    >
+                                                        Mở khóa
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        onClick={async () => {
+                                                            await service.updateParkingCard(
+                                                                { Is_Lock: true },
+                                                                card.Card_ID,
+                                                            );
+                                                            setStatus(true);
+                                                        }}
+                                                        className="mx-1 text-white btn btn-warning btn-xs"
+                                                    >
+                                                        Khóa
+                                                    </button>
+                                                )}
                                                 <button
-                                                    onClick={async () => {
-                                                        await service.updateParkingCard(
-                                                            { Is_Lock: false },
-                                                            card.Card_ID,
-                                                        );
-                                                        setStatus(false);
-                                                    }}
-                                                    className="mx-1 text-white btn btn-success btn-xs"
+                                                    onClick={() => deleteCard(card)}
+                                                    className="mx-1 text-white btn btn-error btn-xs"
                                                 >
-                                                    Mở khóa
+                                                    Xóa
                                                 </button>
-                                            ) : (
-                                                <button
-                                                    onClick={async () => {
-                                                        await service.updateParkingCard(
-                                                            { Is_Lock: true },
-                                                            card.Card_ID,
-                                                        );
-                                                        setStatus(true);
-                                                    }}
-                                                    className="mx-1 text-white btn btn-warning btn-xs"
-                                                >
-                                                    Khóa
-                                                </button>
-                                            )}
-                                            <button
-                                                onClick={() => deleteCard(card)}
-                                                className="mx-1 text-white btn btn-error btn-xs"
-                                            >
-                                                Xóa
-                                            </button>
-                                        </th>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                            </th>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 </>
             )}

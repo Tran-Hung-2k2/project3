@@ -26,6 +26,8 @@ import RequireSignin from './components/RequireSignin';
 const UserProfile = lazy(() => import('./pages/UserProfile'));
 const ChangePassword = lazy(() => import('./pages/ChangePassword'));
 const CardManager = lazy(() => import('./pages/CardManager'));
+const RecordManager = lazy(() => import('./pages/RecordManager'));
+const ParkingInfo = lazy(() => import('./pages/ParkingInfo'));
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -69,6 +71,24 @@ function App() {
                             element={
                                 <Suspense fallback={<Loader />}>
                                     <UserProfile />
+                                </Suspense>
+                            }
+                        />
+
+                        <Route
+                            path="/parking/info"
+                            element={
+                                <Suspense fallback={<Loader />}>
+                                    <ParkingInfo />
+                                </Suspense>
+                            }
+                        />
+
+                        <Route
+                            path="/record/manager"
+                            element={
+                                <Suspense fallback={<Loader />}>
+                                    <RecordManager />
                                 </Suspense>
                             }
                         />

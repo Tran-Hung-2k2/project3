@@ -14,7 +14,7 @@ const Header = () => {
 
     return (
         <div className="my-1 xl:gap-60 lg:gap-40 md:gap-30 sm:gap-20 justify-evenly navbar bg-base-100">
-            <form action="/course/manager" method="GET" className="flex-1 ml-6 join">
+            <form action="/parking/info" method="GET" className="flex-1 ml-6 join">
                 <div className="flex flex-1">
                     <input
                         name="Name"

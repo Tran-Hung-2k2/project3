@@ -2,7 +2,7 @@ import { GrUserManager } from 'react-icons/gr';
 import { GoArrowSwitch } from 'react-icons/go';
 import { LuParkingCircle } from 'react-icons/lu';
 import { CiCreditCard1 } from 'react-icons/ci';
-import { BsFillDeviceSsdFill } from "react-icons/bs";
+import { BsFillDeviceSsdFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -39,21 +39,31 @@ const menuItem = [
         icon: <GrUserManager />,
     },
     {
-        title: 'Ra vào bãi đỗ xe',
-        role: [label.role.MANAGER],
+        title: 'Thông tin ra vào',
+        role: [...Object.values(label.role)],
         child: [
             {
                 path: '/parking/in-out',
                 title: 'Quản lý ra vào',
                 role: [label.role.MANAGER],
             },
+            {
+                path: '/record/manager',
+                title: 'Lịch sử ra vào',
+                role: [label.role.USER, label.role.ADMIN],
+            },
         ],
         icon: <GoArrowSwitch />,
     },
     {
         title: 'Bãi đỗ xe',
-        role: [label.role.ADMIN],
+        role: [...Object.values(label.role)],
         child: [
+            {
+                path: '/parking/info',
+                title: 'Thông tin các bãi đỗ xe',
+                role: [label.role.USER, label.role.MANAGER],
+            },
             {
                 path: '/parking/manager',
                 title: 'Quản lý bãi đỗ xe',
