@@ -7,6 +7,7 @@ var Sequelize = require('sequelize');
  *
  * createTable "Parkings", deps: []
  * createTable "Users", deps: []
+ * createTable "Devices", deps: [Parkings]
  * createTable "Parking_Cards", deps: [Users]
  * createTable "Parking_Managers", deps: [Users, Parkings]
  * createTable "Parking_Records", deps: [Parkings, Parking_Cards]
@@ -16,7 +17,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2023-12-26T11:26:22.143Z",
+    "created": "2024-01-01T07:35:37.374Z",
     "comment": ""
 };
 
@@ -38,7 +39,13 @@ var migrationCommands = [{
                 },
                 "Address": {
                     "type": Sequelize.STRING,
-                    "field": "Address"
+                    "field": "Address",
+                    "allowNull": false
+                },
+                "Charge": {
+                    "type": Sequelize.INTEGER.UNSIGNED,
+                    "field": "Charge",
+                    "allowNull": false
                 },
                 "Number_Of_Vehicles": {
                     "type": Sequelize.INTEGER.UNSIGNED,
@@ -125,7 +132,48 @@ var migrationCommands = [{
                 "Role": {
                     "type": Sequelize.STRING,
                     "field": "Role",
-                    "defaultValue": "Student",
+                    "defaultValue": "User",
+                    "allowNull": false
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                }
+            },
+            {}
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "Devices",
+            {
+                "Device_ID": {
+                    "type": Sequelize.UUID,
+                    "field": "Device_ID",
+                    "primaryKey": true,
+                    "defaultValue": Sequelize.UUIDV4
+                },
+                "Parking_ID": {
+                    "type": Sequelize.UUID,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "Parkings",
+                        "key": "Parking_ID"
+                    },
+                    "field": "Parking_ID",
+                    "allowNull": true
+                },
+                "Name": {
+                    "type": Sequelize.STRING,
+                    "field": "Name",
                     "allowNull": false
                 },
                 "createdAt": {
@@ -270,6 +318,16 @@ var migrationCommands = [{
                     "type": Sequelize.STRING,
                     "field": "Image",
                     "defaultValue": false
+                },
+                "Fee": {
+                    "type": Sequelize.INTEGER.UNSIGNED,
+                    "field": "Fee",
+                    "allowNull": false
+                },
+                "Balance": {
+                    "type": Sequelize.INTEGER.UNSIGNED,
+                    "field": "Balance",
+                    "allowNull": false
                 },
                 "Action": {
                     "type": Sequelize.STRING,

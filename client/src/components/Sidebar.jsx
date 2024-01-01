@@ -1,7 +1,8 @@
 import { GrUserManager } from 'react-icons/gr';
 import { GoArrowSwitch } from 'react-icons/go';
 import { LuParkingCircle } from 'react-icons/lu';
-import { CiCreditCard1 } from "react-icons/ci";
+import { CiCreditCard1 } from 'react-icons/ci';
+import { BsFillDeviceSsdFill } from "react-icons/bs";
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -68,12 +69,12 @@ const menuItem = [
     },
     {
         title: 'Thẻ gửi xe',
-        role: [label.role.ADMIN],
+        role: [label.role.ADMIN, label.role.USER],
         child: [
             {
                 path: '/card/manager',
                 title: 'Quản lý thẻ gửi xe',
-                role: [label.role.ADMIN],
+                role: [label.role.ADMIN, label.role.USER],
             },
             {
                 path: '/card/add',
@@ -82,6 +83,23 @@ const menuItem = [
             },
         ],
         icon: <CiCreditCard1 />,
+    },
+    {
+        title: 'Thiết bị',
+        role: [label.role.ADMIN],
+        child: [
+            {
+                path: '/device/manager',
+                title: 'Quản lý thiết bị',
+                role: [label.role.ADMIN],
+            },
+            {
+                path: '/device/add',
+                title: 'Thêm thiết bị',
+                role: [label.role.ADMIN],
+            },
+        ],
+        icon: <BsFillDeviceSsdFill />,
     },
     {
         label: 'OTHER',

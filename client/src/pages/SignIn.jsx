@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import fields from '../constants/signinFields';
@@ -11,7 +11,6 @@ export default function SignIn() {
     const [state, setState] = useState(fieldsState);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.id]: e.target.value });
@@ -21,8 +20,7 @@ export default function SignIn() {
         e.preventDefault();
         dispatch(
             action.login(state, () => {
-                const from = location.state?.from?.pathname || '/';
-                navigate(from, { replace: true });
+                navigate('/');
             }),
         );
     };

@@ -3,8 +3,8 @@ import messages from '../utils/validation_message';
 import cv from './custom.validation';
 
 const validation = {
-    // [GET] /api/parking/
-    get_all_parking: () => ({
+    // [GET] /api/device/
+    get_all_categories: () => ({
         query: Joi.object({
             Parking_ID: Joi.string().custom(cv.uuidv4Id),
         })
@@ -12,7 +12,7 @@ const validation = {
             .prefs({ messages }),
     }),
 
-    // [POST] api/parking/
+    // [POST] api/device/
     add_parking: () => ({
         body: Joi.object({
             Name: Joi.string().required(),
@@ -24,7 +24,7 @@ const validation = {
             .prefs({ messages }),
     }),
 
-    // [PATCH] api/parking/:id
+    // [PATCH] api/device/:id
     update_parking: () => ({
         params: Joi.object({
             id: Joi.string().required().custom(cv.uuidv4Id),
@@ -43,7 +43,7 @@ const validation = {
             .prefs({ messages }),
     }),
 
-    // [PATCH] /api/parking/num_of_vehicles/:id
+    // [PATCH] /api/device/num_of_vehicles/:id
     update_number_of_vehicles: () => ({
         params: Joi.object({
             id: Joi.string().required().custom(cv.uuidv4Id),

@@ -7,7 +7,7 @@ const fields = [
         placeholder: 'Email của người dùng',
     },
     {
-        label: 'Số tiền muốn nạp (đơn vị nghìn VNĐ)',
+        label: 'Số tiền muốn nạp (nghìn VNĐ)',
         id: 'Balance',
         type: 'number',
         required: true,

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import fields from '../constants/changePasswordFields';
 import service from '../services/auth.service';

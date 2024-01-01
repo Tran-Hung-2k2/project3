@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
-const ManagerLayout = () => {
+const MainLayout = () => {
     return (
         <main className="flex">
             <div className="sticky top-0 left-0 h-full drawer drawer-open max-w-fit">
@@ -18,4 +18,4 @@ const ManagerLayout = () => {
     );
 };
 
-export default ManagerLayout;
+export default MainLayout;

@@ -40,6 +40,14 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 defaultValue: false,
             },
+            Fee: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                allowNull: false,
+            },
+            Balance: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                allowNull: false,
+            },
             Action: {
                 type: DataTypes.STRING,
                 allowNull: false,

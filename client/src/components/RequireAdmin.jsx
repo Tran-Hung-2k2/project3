@@ -8,7 +8,7 @@ function RequireAdmin() {
     const { user } = useSelector((state) => state.auth);
     const location = useLocation();
 
-    return user && [label.role.MANAGER].includes(user.Role) ? (
+    return user && [label.role.ADMIN].includes(user.Role) ? (
         <Outlet />
     ) : (
         <Navigate to="/signin" state={{ from: location }} replace />

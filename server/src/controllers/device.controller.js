@@ -4,9 +4,9 @@ import async_wrap from '../utils/async_wrap.js';
 import APIError from '../utils/api_error.js';
 
 const controller = {
-    // [GET] /api/parking/
+    // [GET] /api/device/
     get_all_parking: async_wrap(async (req, res) => {
-        const queryParams = ['Parking_ID'];
+        const queryParams = ['Device_ID'];
         const whereClause = {};
 
         queryParams.forEach((param) => {
@@ -15,14 +15,14 @@ const controller = {
             }
         });
 
-        const parkings = await db.Parking.findAll({ where: whereClause });
+        const data = await db.Device.findAll({ where: whereClause });
 
-        if (parkings.length > 0)
-            return res.status(200).json(api_response(false, 'Lấy danh sách bãi đỗ xe thành công', parkings));
-        else return res.status(200).json(api_response(false, 'Không tìm thấy bãi đỗ xe nào', parkings));
+        if (data.length > 0)
+            return res.status(200).json(api_response(false, 'Lấy danh sách bãi đỗ xe thành công', data));
+        else return res.status(200).json(api_response(false, 'Không tìm thấy bãi đỗ xe nào', data));
     }),
 
-    // [POST] /api/parking/
+    // [POST] /api/device/
     add_parking: async_wrap(async (req, res) => {
         const parking = await db.Parking.create({
             ...req.body,
@@ -31,7 +31,7 @@ const controller = {
         return res.status(201).json(api_response(false, 'Thêm bãi đỗ xe mới thành công', parking));
     }),
 
-    // [PATCH] /api/parking/:id
+    // [PATCH] /api/device/:id
     update_parking: async_wrap(async (req, res) => {
         const parking = await db.Parking.findByPk(req.params.id);
         if (!parking) throw new APIError(404, 'Không tìm thấy bãi đỗ xe');
@@ -45,7 +45,7 @@ const controller = {
         return res.status(200).json(api_response(false, 'Cập nhật thông tin bãi đỗ xe thành công', parking));
     }),
 
-    // [PATCH] /api/parking/num_of_vehicles/:id
+    // [PATCH] /api/device/num_of_vehicles/:id
     update_number_of_vehicles: async_wrap(async (req, res) => {
         const parking = await db.Parking.findByPk(req.params.id);
         if (!parking) throw new APIError(404, 'Không tìm thấy bãi đỗ xe');
@@ -59,7 +59,7 @@ const controller = {
             .json(api_response(false, 'Cập nhật thông tin số lượng xe trong bãi thành công', parking));
     }),
 
-    // [DELETE] /api/parking/:id
+    // [DELETE] /api/device/:id
     delete_parking: async_wrap(async (req, res) => {
         const result = await db.Parking.destroy({
             where: { Parking_ID: req.params.id },

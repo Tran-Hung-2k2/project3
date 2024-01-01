@@ -9,7 +9,6 @@ import { IoClose } from 'react-icons/io5';
 
 import Loader from '../components/Loader';
 import service from '../services/parking_manger.service';
-import label from '../constants/label';
 import avatar from '../assets/images/avatar.jpg';
 import confirm from '../utils/confirm';
 import action from '../redux/parking/parking.action';
@@ -25,7 +24,6 @@ function UserParkingManager() {
             setLoading(true);
             const res = await service.getAllParkingManager();
             const sortedParkings = _.orderBy(res.data, ['createdAt', 'Name'], 'desc');
-            console.log(sortedParkings);
             setParkings(sortedParkings);
             setLoading(false);
         };
@@ -53,7 +51,7 @@ function UserParkingManager() {
     function deleteParkingManager(parkingManager) {
         confirm({
             title: 'Xóa quyền quản lý bãi đỗ xe',
-            message: `Khi bạn xác nhận quyền quản lý bãi đỗ xe của ${parkingManager.User.Name} sẽ bị xóavà không thể tiếp tục quản lý bãi đỗ xe này. Bạn vẫn muốn xóa?`,
+            message: `Khi bạn xác nhận quyền quản lý bãi đỗ xe của ${parkingManager.User.Name} sẽ bị xóa và không thể tiếp tục quản lý bãi đỗ xe này. Bạn vẫn muốn xóa?`,
             onConfirm: async () => {
                 await service.deleteParkingManager(parkingManager.User_ID, parkingManager.Parking_ID);
                 removeParkingManager(parkingManager.User_ID, parkingManager.Parking_ID);
@@ -91,6 +89,7 @@ function UserParkingManager() {
                 <Loader />
             ) : (
                 <div className="m-6">
+                    <h2 className='text-primary font-bold text-2xl mb-4'>Phân công người quản lý</h2>
                     {parkings.map((parking, index) => (
                         <div
                             key={parking.Parking_ID}

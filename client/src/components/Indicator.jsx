@@ -1,10 +1,10 @@
-function Indicator({ label, active, subLabel, onClick, className, primaryColor }) {
+function Indicator({ label, active, subLabel, onClick, className, className1, primaryColor }) {
     return (
         <div className="mx-3 indicator">
             <span
-                className={`indicator-item badge badge-${primaryColor} ${
+                className={`indicator-item badge badge-${primaryColor} ${className1} ${
                     active
-                        ? `badge-primary shadow-lg border border-${primaryColor} text-${primaryColor} ${className}`
+                        ? `shadow-lg border border-${primaryColor} text-${primaryColor} ${className}`
                         : ''
                 }`}
             >

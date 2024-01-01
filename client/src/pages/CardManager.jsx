@@ -2,48 +2,56 @@ import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { FaArrowDownAZ } from 'react-icons/fa6';
 import { FaArrowUpAZ } from 'react-icons/fa6';
+import { useSelector } from 'react-redux';
 
 import Loader from '../components/Loader';
-import service from '../services/user.service';
-import label from '../constants/label';
 import Indicator from '../components/Indicator';
+import label from '../constants/label';
 import avatar from '../assets/images/avatar.jpg';
+import convertTime from '../utils/convertTime';
 import confirm from '../utils/confirm';
+import service from '../services/card.service';
 
 const UserManager = () => {
-    const [users, setUsers] = useState([]);
+    const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [status, setStatus] = useState(label.user.ACTIVE);
-    const [sort, setSort] = useState({ field: 'Role', dimension: 'asc' });
+    const [status, setStatus] = useState(false);
+    const [sort, setSort] = useState({ field: 'User.Role', dimension: 'asc' });
     const [count, setCount] = useState({});
+    const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const res = await service.getUser({});
-            const sortedUsers = _.orderBy(res.data, sort.field, sort.dimension);
+            let res;
+            res =
+                user.Role == label.role.ADMIN
+                    ? await service.getAllParkingCard()
+                    : await service.getParkingCardByUser();
 
+            const sortedCards = _.orderBy(res.data, sort.field, sort.dimension);
+            console.log(sortedCards);
             const statusCounts = {};
-            sortedUsers.forEach((user) => {
-                statusCounts[user.Status] = (statusCounts[user.Status] || 0) + 1;
+            sortedCards.forEach((card) => {
+                statusCounts[card.Is_Lock] = (statusCounts[card.Is_Lock] || 0) + 1;
             });
 
             setCount(statusCounts);
-            setUsers(sortedUsers.filter((user) => user.Status === status));
+            setCards(sortedCards.filter((card) => card.Is_Lock === status));
             setLoading(false);
         };
 
         fetchData();
     }, [status, sort]);
 
-    function deleteUser(user) {
+    function deleteCard(card) {
         confirm({
-            title: 'Xóa người dùng',
-            message: `Khi bạn xác nhận Người dùng "${user.Name}" với Email là "${user.Email}"  sẽ bị xóa vĩnh viễn và không thể khôi phục. Bạn vẫn muốn xóa?`,
+            title: 'Xóa thẻ gửi xe',
+            message: `Khi bạn xác nhận thẻ gửi xe sẽ bị xóa vĩnh viễn và không thể khôi phục. Bạn vẫn muốn xóa?`,
             onConfirm: async () => {
-                await service.deleteUser(user.User_ID);
-                setCount({ ...count, [user.Status]: count[user.Status] - 1 });
-                setUsers(users.filter((item) => item.User_ID != user.User_ID));
+                await service.deleteParkingCard(card.Card_ID);
+                setCount({ ...count, [card.Is_Lock]: count[card.Is_Lock] - 1 });
+                setCards(cards.filter((item) => item.Card_ID != card.Card_ID));
             },
         });
     }
@@ -59,17 +67,17 @@ const UserManager = () => {
                             primaryColor="primary"
                             className="bg-white"
                             label="Bình thường"
-                            active={status == label.user.ACTIVE}
-                            subLabel={count[label.user.ACTIVE] || 0}
-                            onClick={() => setStatus(label.user.ACTIVE)}
+                            active={status == false}
+                            subLabel={count[false] || 0}
+                            onClick={() => setStatus(false)}
                         />
                         <Indicator
                             primaryColor="primary"
                             className="bg-white"
                             label="Đã khóa"
-                            active={status == label.user.LOCK}
-                            subLabel={count[label.user.LOCK] || 0}
-                            onClick={() => setStatus(label.user.LOCK)}
+                            active={status == true}
+                            subLabel={count[true] || 0}
+                            onClick={() => setStatus(true)}
                         />
                     </div>
                     <div className="m-6">
@@ -79,7 +87,7 @@ const UserManager = () => {
                             className1="bg-success"
                             primaryColor="success"
                             label="Tên người dùng"
-                            active={sort.field == 'Name'}
+                            active={sort.field == 'User.Name'}
                             subLabel={
                                 sort.dimension == 'asc' ? (
                                     <FaArrowDownAZ className="w-4 h-4 text-white" />
@@ -88,7 +96,7 @@ const UserManager = () => {
                                 )
                             }
                             onClick={() => {
-                                if (sort.field != 'Name') setSort({ ...sort, field: 'Name' });
+                                if (sort.field != 'User.Name') setSort({ ...sort, field: 'User.Name' });
                                 else setSort({ ...sort, dimension: sort.dimension == 'asc' ? 'desc' : 'asc' });
                             }}
                         />
@@ -97,7 +105,7 @@ const UserManager = () => {
                             className1="bg-success"
                             primaryColor="success"
                             label="Email"
-                            active={sort.field == 'Email'}
+                            active={sort.field == 'User.Email'}
                             subLabel={
                                 sort.dimension == 'asc' ? (
                                     <FaArrowDownAZ className="w-4 h-4 text-white" />
@@ -106,7 +114,7 @@ const UserManager = () => {
                                 )
                             }
                             onClick={() => {
-                                if (sort.field != 'Email') setSort({ ...sort, field: 'Email' });
+                                if (sort.field != 'User.Email') setSort({ ...sort, field: 'User.Email' });
                                 else setSort({ ...sort, dimension: sort.dimension == 'asc' ? 'desc' : 'asc' });
                             }}
                         />
@@ -115,7 +123,7 @@ const UserManager = () => {
                             className1="bg-success"
                             primaryColor="success"
                             label="Vai trò"
-                            active={sort.field == 'Role'}
+                            active={sort.field == 'User.Role'}
                             subLabel={
                                 sort.dimension == 'asc' ? (
                                     <FaArrowDownAZ className="w-4 h-4 text-white" />
@@ -124,7 +132,7 @@ const UserManager = () => {
                                 )
                             }
                             onClick={() => {
-                                if (sort.field != 'Role') setSort({ ...sort, field: 'Role' });
+                                if (sort.field != 'User.Role') setSort({ ...sort, field: 'User.Role' });
                                 else setSort({ ...sort, dimension: sort.dimension == 'asc' ? 'desc' : 'asc' });
                             }}
                         />
@@ -156,13 +164,13 @@ const UserManager = () => {
                                     <th></th>
                                     <th>Họ và tên</th>
                                     <th>Email</th>
-                                    <th>Số dư</th>
-                                    <th>Vai trò</th>
+                                    <th>ID thẻ gửi xe</th>
+                                    <th>Ngày tạo</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.map((user, index) => (
+                                {cards.map((card, index) => (
                                     <tr key={index}>
                                         <th>
                                             <label>{index + 1}</label>
@@ -171,61 +179,52 @@ const UserManager = () => {
                                             <div className="flex items-center gap-3">
                                                 <div className="avatar">
                                                     <div className="w-12 h-12 mask mask-squircle">
-                                                        <img src={user.Avatar || avatar} alt="Avatar" />
+                                                        <img src={card.User.Avatar || avatar} alt="Avatar" />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div className="font-bold">{user.Name}</div>
-                                                    <div className="text-sm opacity-50">{user.User_ID}</div>
+                                                    <div className="font-bold">{card.User.Name}</div>
+                                                    <div className="text-sm opacity-50">{card.User.Role}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
-                                            {user.Email}
-                                            <br />
-                                            <span className="badge badge-ghost badge-sm">
-                                                {user.Phone_Number || 'Chưa cung cấp số điện thoại'}
-                                            </span>
-                                        </td>
-                                        <td>{user.Balance * 1000 + ' VNĐ'}</td>
-                                        <td>{user.Role}</td>
+                                        <td>{card.User.Email}</td>
+                                        <td>{card.Card_ID}</td>
+                                        <td>{convertTime(card.createdAt)}</td>
                                         <th>
-                                            {status == label.user.ACTIVE && user.Role != label.role.ADMIN && (
+                                            {status ? (
                                                 <button
                                                     onClick={async () => {
-                                                        await service.updateUser(
-                                                            { Status: label.user.LOCK },
-                                                            user.User_ID,
+                                                        await service.updateParkingCard(
+                                                            { Is_Lock: false },
+                                                            card.Card_ID,
                                                         );
-                                                        setStatus(label.user.LOCK);
+                                                        setStatus(false);
+                                                    }}
+                                                    className="mx-1 text-white btn btn-success btn-xs"
+                                                >
+                                                    Mở khóa
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={async () => {
+                                                        await service.updateParkingCard(
+                                                            { Is_Lock: true },
+                                                            card.Card_ID,
+                                                        );
+                                                        setStatus(true);
                                                     }}
                                                     className="mx-1 text-white btn btn-warning btn-xs"
                                                 >
                                                     Khóa
                                                 </button>
                                             )}
-                                            {status == label.user.ACTIVE && user.Role != label.role.ADMIN && (
-                                                <button
-                                                    onClick={() => deleteUser(user)}
-                                                    className="mx-1 text-white btn btn-error btn-xs"
-                                                >
-                                                    Xóa
-                                                </button>
-                                            )}
-                                            {status == label.user.LOCK && (
-                                                <button
-                                                    onClick={async () => {
-                                                        await service.updateUser(
-                                                            { Status: label.user.ACTIVE },
-                                                            user.User_ID,
-                                                        );
-                                                        setStatus(label.user.ACTIVE);
-                                                    }}
-                                                    className="mx-1 text-white btn btn-success btn-xs"
-                                                >
-                                                    Mở khóa
-                                                </button>
-                                            )}
+                                            <button
+                                                onClick={() => deleteCard(card)}
+                                                className="mx-1 text-white btn btn-error btn-xs"
+                                            >
+                                                Xóa
+                                            </button>
                                         </th>
                                     </tr>
                                 ))}

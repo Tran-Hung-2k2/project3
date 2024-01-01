@@ -1,5 +1,46 @@
 {
     "tables": {
+        "Devices": {
+            "tableName": "Devices",
+            "schema": {
+                "Device_ID": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "Device_ID",
+                    "seqType": "Sequelize.UUID"
+                },
+                "Parking_ID": {
+                    "allowNull": true,
+                    "field": "Parking_ID",
+                    "references": {
+                        "model": "Parkings",
+                        "key": "Parking_ID"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "Name": {
+                    "allowNull": false,
+                    "field": "Name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Parkings": {
             "tableName": "Parkings",
             "schema": {
@@ -18,8 +59,14 @@
                     "seqType": "Sequelize.STRING"
                 },
                 "Address": {
+                    "allowNull": false,
                     "field": "Address",
                     "seqType": "Sequelize.STRING"
+                },
+                "Charge": {
+                    "allowNull": false,
+                    "field": "Charge",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
                 },
                 "Number_Of_Vehicles": {
                     "defaultValue": {
@@ -181,6 +228,16 @@
                     "field": "Image",
                     "seqType": "Sequelize.STRING"
                 },
+                "Fee": {
+                    "allowNull": false,
+                    "field": "Fee",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "Balance": {
+                    "allowNull": false,
+                    "field": "Balance",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
                 "Action": {
                     "allowNull": false,
                     "field": "Action",
@@ -265,7 +322,7 @@
                 "Role": {
                     "allowNull": false,
                     "defaultValue": {
-                        "value": "Student"
+                        "value": "User"
                     },
                     "field": "Role",
                     "seqType": "Sequelize.STRING"

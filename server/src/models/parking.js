@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'Parking_ID',
                 onDelete: 'CASCADE',
             });
+
+            Parking.hasMany(models.Device, {
+                foreignKey: 'Parking_ID',
+                onDelete: 'SET NULL',
+            });
         }
     }
 
@@ -32,7 +37,14 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            Address: DataTypes.STRING,
+            Address: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            Charge: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                allowNull: false,
+            },
             Number_Of_Vehicles: {
                 type: DataTypes.INTEGER.UNSIGNED,
                 defaultValue: 0,

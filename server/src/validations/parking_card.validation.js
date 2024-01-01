@@ -14,8 +14,23 @@ const validation = {
 
     // [PATCH] api/parking_card/:id
     update_parking_card: () => ({
+        params: Joi.object({
+            id: Joi.string().required().custom(cv.uuidv4Id),
+        })
+            .unknown(false)
+            .prefs({ messages }),
+
         body: Joi.object({
             Is_Lock: Joi.boolean().required().label('Trạng thái thẻ'),
+        })
+            .unknown(false)
+            .prefs({ messages }),
+    }),
+
+    // [DELETE] /api/parking_card/:id
+    delete_parking_card: () => ({
+        params: Joi.object({
+            id: Joi.string().required().custom(cv.uuidv4Id),
         })
             .unknown(false)
             .prefs({ messages }),

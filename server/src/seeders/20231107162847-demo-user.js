@@ -9,10 +9,10 @@ module.exports = {
         const hashed_manager_password = await bcrypt.hash('manager', salt);
         const hashed_user_password = await bcrypt.hash('user', salt);
 
-        const userData = [
+        const data = [
             {
                 User_ID: 'ebf65320-86f7-4268-a634-4b24e52f700e',
-                Name: 'Trần Việt Hùng',
+                Name: 'Hust Parking Admin',
                 Email: 'tranviethung912002@gmail.com',
                 Password: hashed_admin_password,
                 Gender: label.gender.MALE,
@@ -28,8 +28,8 @@ module.exports = {
             },
             {
                 User_ID: '5f3e964e-8d2e-4b6a-9462-80bbdec33ae8',
-                Name: 'Dương Ngọc Hải',
-                Email: 'hai@gmail.com',
+                Name: 'Hust Parking Manager',
+                Email: 'tranhung912002@gmail.com',
                 Password: hashed_manager_password,
                 Gender: label.gender.MALE,
                 Birthday: '2002-10-10',
@@ -44,8 +44,8 @@ module.exports = {
             },
             {
                 User_ID: '06dab5f6-46bc-46df-9f76-4ed1f019017d',
-                Name: 'Ngô Quốc Khánh',
-                Email: 'khanh@gmail.com',
+                Name: 'Trần Việt Hùng',
+                Email: 'hung912002@gmail.com',
                 Password: hashed_user_password,
                 Gender: label.gender.MALE,
                 Birthday: '2002-08-20',
@@ -60,7 +60,7 @@ module.exports = {
             },
         ];
 
-        await queryInterface.bulkInsert('Users', userData, {});
+        await queryInterface.bulkInsert('Users', data, {});
 
         return Promise.resolve();
     },

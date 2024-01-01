@@ -2,7 +2,7 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        const parkingCardData = [
+        const data = [
             {
                 Card_ID: 'd97987a4-696d-4632-a4a8-7c46e9522286',
                 User_ID: 'ebf65320-86f7-4268-a634-4b24e52f700e',
@@ -19,7 +19,7 @@ module.exports = {
             },
         ];
 
-        await queryInterface.bulkInsert('Parking_Cards', parkingCardData, {});
+        await queryInterface.bulkInsert('Parking_Cards', data, {});
 
         return Promise.resolve();
     },

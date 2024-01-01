@@ -8,7 +8,7 @@ const route = express.Router();
 
 route
     .route('/')
-    .get(validate(vld.get_all_parking()), mdw.verify_admin, ctrl.get_all_parking)
+    .get(mdw.verify_admin, ctrl.get_all_parking)
     .post(validate(vld.add_parking()), mdw.verify_admin, ctrl.add_parking);
 
 route
