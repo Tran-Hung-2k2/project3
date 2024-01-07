@@ -7,6 +7,7 @@ const validation = {
     get_all_device: () => ({
         query: Joi.object({
             Device_ID: Joi.string().custom(cv.uuidv4Id),
+            Parking_ID: Joi.string().custom(cv.uuidv4Id),
         })
             .unknown(false)
             .prefs({ messages }),

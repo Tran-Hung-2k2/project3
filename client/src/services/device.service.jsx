@@ -2,7 +2,7 @@ import axios from './axios.service';
 
 const service = {
     getAllDevice: async (params) => {
-        const queryParams = ['Device_ID'];
+        const queryParams = ['Device_ID', 'Parking_ID'];
         const paramsObject = {};
 
         if (params) {

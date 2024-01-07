@@ -35,7 +35,6 @@ export default function ParkingAdd() {
     }, []);
 
     const getData = async () => {
-        console.log(Device_ID);
         const res = await service.getAllDevice({ Device_ID });
 
         let { Name, Parking_ID } = res.data[0];

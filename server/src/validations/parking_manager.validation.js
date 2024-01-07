@@ -3,6 +3,15 @@ import messages from '../utils/validation_message';
 import cv from './custom.validation';
 
 const validation = {
+    // [GET] /api/parking_manager/manager
+    get_parking_manager_by_manager: () => ({
+        query: Joi.object({
+            Parking_ID: Joi.string().custom(cv.uuidv4Id),
+        })
+            .unknown(false)
+            .prefs({ messages }),
+    }),
+
     // [POST] api/parking_manager/
     add_parking_manager: () => ({
         body: Joi.object({

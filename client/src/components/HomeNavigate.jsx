@@ -12,7 +12,7 @@ function HomeNavigate() {
     ) : user.Role === label.role.ADMIN ? (
         <Navigate to="/record/manager" state={{ from: location }} replace />
     ) : user.Role === label.role.MANAGER ? (
-        <Navigate to="/parking/in-out" state={{ from: location }} replace />
+        <Navigate to="/in-out/parking" state={{ from: location }} replace />
     ) : (
         <Navigate to="/record/manager" state={{ from: location }} replace />
     );

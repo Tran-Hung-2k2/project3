@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             Image: {
                 type: DataTypes.STRING,
-                defaultValue: false,
+                allowNull: false,
             },
             Fee: {
                 type: DataTypes.INTEGER.UNSIGNED,

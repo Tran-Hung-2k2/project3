@@ -25,6 +25,30 @@ const controller = {
             .json(api_response(false, 'Lấy danh sách quản lý bãi đỗ xe thành công', parking_managers));
     }),
 
+    // [GET] /api/parking_manager/manager
+    get_parking_manager_by_manager: async_wrap(async (req, res) => {
+        const queryParams = ['Parking_ID'];
+        const whereClause = {};
+
+        queryParams.forEach((param) => {
+            if (req.query[param]) {
+                whereClause[param] = req.query[param];
+            }
+        });
+
+        const parking_managers = await db.Parking.findAll({
+            include: [
+                {
+                    model: db.Parking_Manager,
+                    where: { ...whereClause, User_ID: req.token.id },
+                },
+            ],
+        });
+        return res
+            .status(200)
+            .json(api_response(false, 'Lấy danh sách quản lý bãi đỗ xe thành công', parking_managers));
+    }),
+
     // [POST] /api/parking_manager/
     add_parking_manager: async_wrap(async (req, res) => {
         const manager = await db.User.findOne({ where: { Email: req.body.Email } });
@@ -77,7 +101,14 @@ const controller = {
         parking_manager.Is_Managing = req.body.Is_Managing;
         await parking_manager.save();
 
-        return res.status(200).json(api_response(false, 'Cập nhật thông tin quản lý bãi đỗ xe thành công'));
+        return res
+            .status(200)
+            .json(
+                api_response(
+                    false,
+                    parking_manager.Is_Managing ? 'Bắt đầu quản lý vào ra bãi đỗ xe' : 'Dừng quản lý vào ra bãi đỗ xe',
+                ),
+            );
     }),
 
     // [DELETE] /api/parking_manager/:user_id/:parking_id

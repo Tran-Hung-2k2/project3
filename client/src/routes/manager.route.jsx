@@ -1,11 +1,20 @@
 import { lazy } from 'react';
 
-const BalanceAdd = lazy(() => import('../pages/BalanceAdd'));
+const InOutParking = lazy(() => import('../pages/InOutParking'));
+const InOutManager = lazy(() => import('../pages/InOutManager'));
 
 const coreRoutes = [
     {
-        path: '/parking/in-out',
-        component: BalanceAdd,
+        path: '/in-out/parking',
+        component: InOutParking,
+    },
+    {
+        path: '/in-out/manager/:Parking_ID',
+        component: InOutManager,
+    },
+    {
+        path: '/in-out/manager',
+        component: InOutManager,
     },
 ];
 

@@ -8,7 +8,7 @@ const route = express.Router();
 
 route
     .route('/')
-    .get(validate(vld.get_all_device()), mdw.verify_admin, ctrl.get_all_device)
+    .get(validate(vld.get_all_device()), mdw.verify_admin_and_manager, ctrl.get_all_device)
     .post(validate(vld.add_device()), mdw.verify_admin, ctrl.add_device);
 
 route

@@ -1,30 +1,31 @@
 import { Joi } from 'express-validation';
 import messages from '../utils/validation_message';
 import cv from './custom.validation';
+import label from '../constants/label';
 
 const validation = {
-    // [POST] api/parking/
-    add_parking: () => ({
-        body: Joi.object({
-            Name: Joi.string().required(),
-            Address: Joi.string(),
-            Max_Space: Joi.number().integer().min(0),
+    // [GET] api/parking_record/lastest
+    get_lastest_record: () => ({
+        query: Joi.object({
+            Parking_ID: Joi.string().required().custom(cv.uuidv4Id),
+            Card_ID: Joi.string().required().custom(cv.uuidv4Id),
         })
             .unknown(false)
-            .custom(cv.confirmPassword)
             .prefs({ messages }),
     }),
 
-    // [PATCH] api/parking/:id
-    update_parking: () => ({
+    // [POST] api/parking_record/
+    add_parking_record: () => ({
         body: Joi.object({
-            Name: Joi.string(),
-            Address: Joi.string(),
-            Max_Space: Joi.number().integer().min(0),
-            Number_Of_Vehicles: Joi.number().integer().min(0),
+            Card_ID: Joi.string().required().custom(cv.uuidv4Id).label('ID người gửi xe'),
+            Parking_ID: Joi.string().required().custom(cv.uuidv4Id).label('ID bãi đỗ xe'),
+            Action: Joi.string()
+                .valid(...Object.values(label.action))
+                .required()
+                .label('Hành động'),
+            Image: Joi.string().label('Ảnh biển số xe'),
         })
             .unknown(false)
-            .custom(cv.confirmPassword)
             .prefs({ messages }),
     }),
 };

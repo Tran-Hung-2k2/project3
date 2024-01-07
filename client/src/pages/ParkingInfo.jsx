@@ -44,16 +44,7 @@ const ParkingInfo = () => {
                             {parkings.map((parking, index) => (
                                 <tr key={parking.Parking_ID}>
                                     <th>{index + 1}</th>
-                                    <td>
-                                        <Link
-                                            onClick={() => {
-                                                dispatch(action.addParking(parking.Parking_ID));
-                                            }}
-                                            to="/record/manager"
-                                        >
-                                            {parking.Name}
-                                        </Link>
-                                    </td>
+                                    <td>{parking.Name}</td>
                                     <td>{parking.Address}</td>
                                     <td>{parking && parking?.Charge * 1000 + ' VNĐ'}</td>
                                     <td>

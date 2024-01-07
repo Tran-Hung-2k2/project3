@@ -17,7 +17,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2024-01-01T07:35:37.374Z",
+    "created": "2024-01-07T10:54:54.165Z",
     "comment": ""
 };
 
@@ -317,7 +317,7 @@ var migrationCommands = [{
                 "Image": {
                     "type": Sequelize.STRING,
                     "field": "Image",
-                    "defaultValue": false
+                    "allowNull": false
                 },
                 "Fee": {
                     "type": Sequelize.INTEGER.UNSIGNED,

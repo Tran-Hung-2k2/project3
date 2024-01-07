@@ -53,7 +53,6 @@ const validation = {
             Status: Joi.string()
                 .valid(...Object.values(label.user))
                 .label('Trạng thái tài khoản'),
-            Balance: Joi.number().positive().required().label('Số tiền'),
         })
             .unknown(false)
             .prefs({ messages }),

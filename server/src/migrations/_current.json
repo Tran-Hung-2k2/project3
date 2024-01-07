@@ -222,9 +222,7 @@
                     "seqType": "Sequelize.UUID"
                 },
                 "Image": {
-                    "defaultValue": {
-                        "value": false
-                    },
+                    "allowNull": false,
                     "field": "Image",
                     "seqType": "Sequelize.STRING"
                 },

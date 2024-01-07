@@ -6,7 +6,7 @@ import APIError from '../utils/api_error.js';
 const controller = {
     // [GET] /api/device/
     get_all_device: async_wrap(async (req, res) => {
-        const queryParams = ['Device_ID'];
+        const queryParams = ['Device_ID', 'Parking_ID'];
         const whereClause = {};
 
         queryParams.forEach((param) => {

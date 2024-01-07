@@ -10,6 +10,7 @@ const api_notify = [
     { url: '/api/parking', methods: ['post', 'patch', 'delete'] },
     { url: '/api/device', methods: ['post', 'patch', 'delete'] },
     { url: '/api/parking_card', methods: ['post', 'patch', 'delete'] },
+    { url: '/api/parking_record', methods: ['post', 'patch', 'delete'] },
     { url: '/api/parking_manger', methods: ['post', 'patch', 'delete'] },
 ];
 
@@ -33,17 +34,18 @@ service.interceptors.response.use(
     (error) => {
         if (error.code == 'ERR_NETWORK') notify('Không thể kết nối tới máy chủ. Vui lòng thử lại sau', 'error');
         else
-            switch (error.response.status) {
+            switch (error?.response?.status) {
                 case 401:
                     notify(error.response.data.message, 'error');
                     store.dispatch({ type: type.LOGOUT });
                     break;
                 default:
-                    if (error.response.data.errors) {
+                    if (error.response?.data?.errors) {
                         error.response.data.errors.forEach((errorItem) => {
                             notify(errorItem.message, 'error');
                         });
-                    } else notify(error.response.data.message, 'error');
+                    } else if (error.response?.data?.message) notify(error.response.data.message, 'error');
+                    else console.log(error);
             }
 
         return Promise.reject(error);

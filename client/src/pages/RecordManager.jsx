@@ -7,6 +7,7 @@ import service from '../services/record.service';
 import label from '../constants/label';
 import avatar from '../assets/images/avatar.jpg';
 import convertTime from '../utils/convertTime';
+import ButtonBack from '../components/ButtonBack';
 
 const RecordManager = () => {
     const [records, setRecords] = useState([]);
@@ -58,6 +59,7 @@ const RecordManager = () => {
     return (
         <>
             <div className="m-6">
+                {user.Role == label.role.MANAGER && <ButtonBack />}
                 <div className="ml-3 my-4 font-bold">
                     Lọc theo ID thẻ gửi xe:
                     <input

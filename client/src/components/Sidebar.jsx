@@ -43,8 +43,8 @@ const menuItem = [
         role: [...Object.values(label.role)],
         child: [
             {
-                path: '/parking/in-out',
-                title: 'Quản lý ra vào',
+                path: '/in-out/parking',
+                title: 'Quản lý vào ra',
                 role: [label.role.MANAGER],
             },
             {
