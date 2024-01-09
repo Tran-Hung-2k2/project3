@@ -6,24 +6,23 @@ import label from '../constants/label';
 import service from '../services/device.service';
 import recordService from '../services/record.service';
 import mqttService from '../services/mqtt.service';
+import cardService from '../services/card.service';
 import notify from '../utils/notify';
 import getImage from '../utils/getImage';
 import inoutAction from '../redux/inout/inout.action';
 import checkUUIDv4 from '../utils/checkUUIDv4';
 
-function InOutItem({ Parking_ID, id }) {
+function InOutItem({ Parking_ID, id, openTime }) {
     const dispatch = useDispatch();
     const { action, currDevice, cameraIP } = useSelector((state) => state.inout);
     const [devices, setDevices] = useState();
     const [loading, setLoading] = useState(true);
     const [client, setClient] = useState(null);
+    const [user, setUser] = useState(null);
     const [color, setColor] = useState('primary');
     const [Card_ID, setCard_ID] = useState('');
     const [file, setFile] = useState(null);
-    const [images, setImages] = useState([
-        'https://cartimes.tapchicongthuong.vn/images/20/10/13/bien_so_xe_lam_dong_1.jpg',
-        'https://cartimes.tapchicongthuong.vn/images/20/10/13/bien_so_xe_lam_dong_1.jpg',
-    ]);
+    const [images, setImages] = useState(['/src/assets/images/default.jpg', '/src/assets/images/default.jpg']);
 
     useEffect(() => {
         async function getData() {
@@ -46,7 +45,7 @@ function InOutItem({ Parking_ID, id }) {
 
     useEffect(() => {
         const handleMessage = async (topic, message) => {
-            if (topic == currDevice[id] + '-info' && checkUUIDv4(message)) {
+            if (topic == currDevice[id] + '/info' && checkUUIDv4(message)) {
                 if (cameraIP[id]) {
                     const { url, file } = await getImage(cameraIP[id], currDevice[id]);
                     if (url) {
@@ -54,8 +53,10 @@ function InOutItem({ Parking_ID, id }) {
                         if (action[id] == label.action.GO_OUT) {
                             const res = await recordService.getLastestRecord({ Parking_ID, Card_ID: cardIdString });
                             if (res?.data?.Image) setImages([res.data.Image, url]);
-                            else setImages([url, url]);
-                        } else setImages([url, url]);
+                            else setImages(['/src/assets/images/default.jpg', url]);
+                        } else setImages(['/src/assets/images/default.jpg', url]);
+                        const res = await cardService.getParkingCardInfo({ Card_ID: cardIdString });
+                        setUser(res.data.User);
                         setFile(file);
                         setCard_ID(cardIdString);
                         setColor('green-700');
@@ -84,11 +85,11 @@ function InOutItem({ Parking_ID, id }) {
 
     useEffect(() => {
         if (currDevice[id]) {
-            mqttService.subscribe(client, currDevice[id] + '-info');
+            mqttService.subscribe(client, currDevice[id] + '/info');
         }
 
         return () => {
-            if (currDevice[id]) mqttService.unsubscribe(client, currDevice[id] + '-info');
+            if (currDevice[id]) mqttService.unsubscribe(client, currDevice[id] + '/info');
         };
     }, [currDevice, client]);
 
@@ -147,11 +148,16 @@ function InOutItem({ Parking_ID, id }) {
                 src={images[0]}
             />
             <img
-                className={`object-contain w-full rounded-lg h-72 border-2 ${
+                className={`object-contain w-full rounded-lg h-60 border-2 ${
                     color == 'green-700' ? 'border-green-700' : 'border-primary'
                 }`}
                 src={images[1]}
             />
+            {user && (
+                <div>
+                    <b>{user.Role == label.role.ADMIN ? 'Thẻ khách' : user.Name}</b> - <b>{user.Balance * 1000} VNĐ</b>
+                </div>
+            )}
             <button
                 className="btn w-full btn-primary"
                 onClick={async () => {
@@ -163,8 +169,8 @@ function InOutItem({ Parking_ID, id }) {
                             newRecord.append('Parking_ID', Parking_ID);
                             newRecord.append('Image', file);
                             await recordService.addRecord(newRecord);
-                            mqttService.publish(client, currDevice[id] + '-control', 'open');
                             setColor('primary');
+                            mqttService.publish(client, currDevice[id] + '/control', openTime);
                         } else notify('Chưa có thẻ nào được quẹt', 'error');
                     } else notify('Vui lòng chọn thiết bị trước khi mở barier', 'error');
                 }}

@@ -101,6 +101,7 @@ const controller = {
 
         const parking_card = await db.Parking_Card.findByPk(req.body.Card_ID);
         if (!parking_card) throw new APIError(404, 'Không tìm thấy thẻ gửi xe');
+        if (parking_card.Is_Lock) throw new APIError(400, 'Thẻ gửi xe đang bị khóa');
         const user = await db.User.findByPk(parking_card.User_ID);
 
         if (!req.file) throw new APIError(400, 'Ảnh biển số xe là bắt buộc');
@@ -125,17 +126,19 @@ const controller = {
             req.body.Fee = 0;
             req.body.Balance = 0;
         } else {
-            if (req.body.Action == label.action.GO_IN) {
+            if (req.body.Action == label.action.GO_IN)
                 if (user.Balance < parking.Charge) throw new APIError(400, 'Số dư không đủ');
-                parking.Number_Of_Vehicles = parking.Number_Of_Vehicles + 1;
-            } else parking.Number_Of_Vehicles = parking.Number_Of_Vehicles - 1;
 
             req.body.Fee = req.body.Action == label.action.GO_OUT ? parking.Charge : 0;
             user.Balance = user.Balance - req.body.Fee;
             req.body.Balance = user.Balance;
             await user.save();
-            await parking.save();
         }
+
+        if (req.body.Action == label.action.GO_IN) {
+            parking.Number_Of_Vehicles = parking.Number_Of_Vehicles + 1;
+        } else parking.Number_Of_Vehicles = parking.Number_Of_Vehicles - 1;
+        await parking.save();
 
         await db.Parking_Record.create(req.body);
 

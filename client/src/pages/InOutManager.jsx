@@ -11,6 +11,7 @@ import ButtonBack from '../components/ButtonBack';
 const App = () => {
     const [loading, setLoading] = useState(true);
     const [parking, setParking] = useState('');
+    const [openTime, setOpenTime] = useState('3');
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { Parking_ID } = useSelector((state) => state.parking_manger);
@@ -48,9 +49,19 @@ const App = () => {
         <div className="m-8 overflow-x-auto w-full">
             <ButtonBack />
             <h2 className="font-bold text-2xl mt-4">Bãi đỗ xe {parking?.Name}</h2>
-            <div className="grid grid-cols-2 gap-8 w-full pr-16 mt-4">
-                <InOutItem id={0} Parking_ID={Parking_ID} />
-                <InOutItem id={1} Parking_ID={Parking_ID} />
+            <div className="mt-4">
+                <label className="block font-medium mb-2">Thời gian mở barier (giây)</label>
+                <input
+                    className="w-full max-w-xl input input-bordered input-primary"
+                    type="text"
+                    placeholder="Ví dụ: 2 (2 giây)"
+                    value={openTime}
+                    onChange={(event) => setOpenTime(event.target.value)}
+                />
+            </div>
+            <div className="grid grid-cols-2 gap-8 w-full pr-16 mt-2">
+                <InOutItem openTime={openTime} id={0} Parking_ID={Parking_ID} />
+                <InOutItem openTime={openTime} id={1} Parking_ID={Parking_ID} />
             </div>
         </div>
     );

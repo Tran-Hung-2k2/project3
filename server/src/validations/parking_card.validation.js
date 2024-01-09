@@ -3,7 +3,16 @@ import messages from '../utils/validation_message';
 import cv from './custom.validation';
 
 const validation = {
-    // [POST] api/parking_card/
+    // [GET] /api/parking_card/
+    get_parking_card_info: () => ({
+        query: Joi.object({
+            Card_ID: Joi.string().required().custom(cv.uuidv4Id),
+        })
+            .unknown(false)
+            .prefs({ messages }),
+    }),
+
+    // [POST] /api/parking_card/
     add_parking_card: () => ({
         body: Joi.object({
             Email: Joi.string().email().required(),
@@ -12,7 +21,7 @@ const validation = {
             .prefs({ messages }),
     }),
 
-    // [PATCH] api/parking_card/:id
+    // [PATCH] /api/parking_card/:id
     update_parking_card: () => ({
         params: Joi.object({
             id: Joi.string().required().custom(cv.uuidv4Id),
