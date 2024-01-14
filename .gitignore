@@ -32,7 +32,7 @@ npm-debug.log
 .DS_Store
 
 .env
-
+# client
 # dependencies
 /client/node_modules
 /client/.pnp
