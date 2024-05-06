@@ -5,4 +5,4 @@ const convertTime = (utcTime) => {
     return format(date, 'dd-MM-yyyy HH:mm:ss');
 };
 
-export default convertTime
+export default convertTime;

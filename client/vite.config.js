@@ -13,7 +13,8 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'index.html'),
             },
-        },
+            color: "#ccc"
+        }, 
     },
 });
 // export default defineConfig({
